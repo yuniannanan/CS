@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>智能导医系统</title>
+<style>
+:root {
+  --primary: #1890FF;
+  --primary-dark: #096DD9;
+  --success: #52C41A;
+  --warning: #FAAD14;
+  --danger: #FF4D4F;
+  --bg: #F0F8FF;
+  --card-bg: #FFFFFF;
+  --text: #333333;
+  --text-light: #888888;
+  --border: #E8E8E8;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* === 顶部栏 === */
+.header {
+  background: linear-gradient(135deg, #1890FF, #096DD9);
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(24,144,255,0.25);
+  position: sticky; top: 0; z-index: 100;
+}
+.header h1 { font-size: 20px; font-weight: 700; }
+.header .subtitle { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+
+/* === 主体 === */
+.container {
+  max-width: 520px; margin: 0 auto; padding: 16px;
+}
+
+/* === 卡片 === */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/* === 语音按钮 === */
+.voice-area { text-align: center; padding: 8px 0; }
+.voice-btn {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: none; cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--primary); color: white; box-shadow: 0 4px 16px rgba(24,144,255,0.3);
+}
+.voice-btn:active, .voice-btn.recording {
+  background: #FF4D4F; transform: scale(1.1);
+  box-shadow: 0 4px 24px rgba(255,77,79,0.4);
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,77,79,0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(255,77,79,0); }
+}
+.voice-btn svg { width: 36px; height: 36px; }
+.voice-status { font-size: 13px; color: var(--text-light); margin-top: 8px; min-height: 20px; }
+
+/* === 文字输入 === */
+.input-group { display: flex; gap: 10px; }
+.input-group textarea {
+  flex: 1; border: 2px solid var(--border); border-radius: 8px;
+  padding: 12px; font-size: 15px; resize: none; min-height: 60px;
+  font-family: inherit; outline: none; transition: border-color 0.2s;
+}
+.input-group textarea:focus { border-color: var(--primary); }
+.submit-btn {
+  background: var(--success); color: white; border: none; border-radius: 8px;
+  padding: 0 20px; font-size: 15px; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: background 0.2s;
+}
+.submit-btn:hover { background: #73D13D; }
+
+/* === 快捷症状 === */
+.quick-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.quick-tag {
+  background: #E6F7FF; color: var(--primary); border: 1px solid #91D5FF;
+  border-radius: 20px; padding: 6px 16px; font-size: 13px; cursor: pointer;
+  transition: all 0.2s; user-select: none;
+}
+.quick-tag:active { background: var(--primary); color: white; }
+
+/* === 结果卡片 === */
+.result-card { border-left: 4px solid var(--primary); }
+.result-dept { font-size: 20px; font-weight: 700; color: var(--primary); }
+.result-floor { font-size: 14px; color: var(--text); margin-top: 4px; }
+.confidence-bar {
+  height: 8px; background: #F0F0F0; border-radius: 4px; margin-top: 12px; overflow: hidden;
+}
+.confidence-fill {
+  height: 100%; border-radius: 4px; transition: width 0.5s ease;
+}
+.result-reason { font-size: 13px; color: var(--text-light); margin-top: 8px; line-height: 1.6; }
+.route-btn {
+  display: block; width: 100%; margin-top: 12px; background: #FFF7E6;
+  color: #D48806; border: 1px solid #FFD591; border-radius: 8px;
+  padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center;
+  transition: background 0.2s;
+}
+.route-btn:hover { background: #FFF1CC; }
+
+/* === 导航弹窗 === */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-content {
+  background: white; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px;
+  max-height: 80vh; overflow-y: auto; animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-close {
+  float: right; background: none; border: none; font-size: 22px;
+  cursor: pointer; color: var(--text-light); padding: 4px;
+}
+.route-step {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid #F5F5F5;
+}
+.route-step:last-child { border-bottom: none; }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--primary);
+  color: white; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.step-text { font-size: 14px; line-height: 1.5; flex: 1; }
+
+/* === 规则管理 === */
+.rules-btn {
+  position: fixed; bottom: 80px; right: 16px; z-index: 50;
+  width: 50px; height: 50px; border-radius: 50%; background: var(--warning);
+  color: white; border: none; box-shadow: 0 4px 16px rgba(250,173,20,0.35);
+  font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.rules-toolbar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+.filter-btn {
+  padding: 4px 14px; border-radius: 14px; border: 1px solid var(--border);
+  background: white; font-size: 12px; cursor: pointer; transition: all 0.2s;
+}
+.filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.rules-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.rules-table th { background: #FAFAFA; padding: 8px 6px; text-align: left; border-bottom: 2px solid var(--border); position: sticky; top: 0; }
+.rules-table td { padding: 6px; border-bottom: 1px solid #F5F5F5; vertical-align: middle; }
+.rules-table tr:hover { background: #F0F8FF; }
+.sev-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 10px;
+  color: white; font-weight: 600; white-space: nowrap;
+}
+.rule-action-btn {
+  padding: 2px 8px; border-radius: 4px; border: none; font-size: 11px;
+  cursor: pointer; margin: 1px; transition: opacity 0.2s;
+}
+.rule-action-btn:hover { opacity: 0.8; }
+.rules-stats { display: flex; gap: 16px; font-size: 12px; color: var(--text-light); margin-bottom: 8px; }
+.rules-stats strong { color: var(--primary); font-size: 16px; }
+.form-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.form-row label { font-size: 13px; min-width: 60px; color: var(--text-light); }
+.form-row select, .form-row input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
+.form-row select { min-width: 100px; }
+.form-row input[type=number] { width: 80px; }
+.form-row textarea { flex: 1; min-width: 200px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size:13px; height: 36px; resize:none; }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+.modal-actions button { padding: 8px 24px; border-radius: 8px; border: none; font-size: 14px; cursor: pointer; }
+
+/* === 历史记录 === */
+.history-btn {
+  position: fixed; bottom: 16px; right: 16px; z-index: 50;
+  width: 50px; height: 50px; border-radius: 50%; background: var(--primary);
+  color: white; border: none; box-shadow: 0 4px 16px rgba(24,144,255,0.35);
+  font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.history-item {
+  padding: 14px 0; border-bottom: 1px solid #F5F5F5;
+}
+.history-item:last-child { border-bottom: none; }
+.history-text { font-size: 14px; color: var(--text); }
+.history-dept { font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 4px; }
+.history-time { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+/* === Toast === */
+.toast {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.75); color: white; padding: 10px 24px;
+  border-radius: 20px; font-size: 14px; z-index: 300;
+  animation: fadeInOut 2s ease;
+  pointer-events: none;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+/* === 加载动画 === */
+.spinner {
+  display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>智能导医系统</h1>
+  <div class="subtitle">AI-powered Medical Triage</div>
+</div>
+
+<!-- 浮动按钮 -->
+<button class="rules-btn" id="rulesBtn" title="规则管理">⚙</button>
+<button class="history-btn" id="historyBtn" title="历史记录">📋</button>
+
+<div class="container">
+
+  <!-- 语音输入 -->
+  <div class="card" id="voiceCard">
+    <div class="voice-area">
+      <button class="voice-btn" id="voiceBtn" title="按住说话">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+        </svg>
+      </button>
+      <div class="voice-status" id="voiceStatus">点击麦克风开始说话</div>
+      <div id="voiceHint" style="font-size:11px;color:#BFBFBF;margin-top:4px;">
+      🎤 离线语音识别（Whisper），长按说话松手识别，首次约5秒
+      </div>
+    </div>
+  </div>
+
+  <!-- 文字输入 -->
+  <div class="card">
+    <div class="input-group">
+      <textarea id="textInput" placeholder="请描述您的症状，如：我发烧、咳嗽…"></textarea>
+      <button class="submit-btn" id="submitBtn">分诊</button>
+    </div>
+    <div class="quick-tags" id="quickTags">
+      <span class="quick-tag" onclick="addSymptom('发烧')">发烧</span>
+      <span class="quick-tag" onclick="addSymptom('咳嗽')">咳嗽</span>
+      <span class="quick-tag" onclick="addSymptom('头痛')">头痛</span>
+      <span class="quick-tag" onclick="addSymptom('腹痛')">腹痛</span>
+      <span class="quick-tag" onclick="addSymptom('喉咙痛')">喉咙痛</span>
+      <span class="quick-tag" onclick="addSymptom('关节痛')">关节痛</span>
+      <span class="quick-tag" onclick="addSymptom('皮肤瘙痒')">皮肤瘙痒</span>
+      <span class="quick-tag" onclick="addSymptom('胸痛')">胸痛</span>
+    </div>
+  </div>
+
+  <!-- 结果区 -->
+  <div id="resultArea"></div>
+
+  <!-- 推荐科室 -->
+  <div class="card" id="deptCard" style="display:none">
+    <h3 style="font-size:14px;color:var(--text-light);margin-bottom:8px;">推荐科室</h3>
+    <div id="deptList"></div>
+  </div>
+
+</div>
+
+<!-- 规则管理弹窗（隐藏） -->
+<div class="modal-overlay" id="routeModal" style="display:none">
+  <div class="modal-content" style="max-width:900px;padding:16px;">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+      <h2 style="font-size:16px;color:var(--primary);">🏥 <span id="routeDeptName">就诊导航</span></h2>
+      <div style="display:flex;gap:4px;" id="floorBtns"></div>
+    </div>
+    <div style="background:#F9FAFB;border-radius:8px;padding:8px;margin-bottom:8px;position:relative;">
+      <svg id="floorSvg" viewBox="0 0 900 600" style="width:100%;height:auto;min-height:300px;background:white;border-radius:6px;border:1px solid #E8E8E8;">
+        <!-- 楼层平面图由JS动态绘制 -->
+      </svg>
+    </div>
+    <div id="routeSteps" style="font-size:13px;color:var(--text);line-height:1.8;"></div>
+  </div>
+</div>
+
+<!-- 规则管理弹窗（隐藏） -->
+<div class="modal-overlay" id="rulesModal" style="display:none">
+  <div class="modal-content" style="max-width: 600px;">
+    <button class="modal-close" onclick="closeRules()">&times;</button>
+    <h2 style="font-size:18px;color:var(--primary);margin-bottom:8px;">⚙ 专家系统规则库</h2>
+    <div class="rules-stats" id="rulesStats"></div>
+    <div class="rules-toolbar">
+      <button class="filter-btn active" onclick="filterRules('all')">全部</button>
+      <button class="filter-btn" onclick="filterRules('single')">单症状</button>
+      <button class="filter-btn" onclick="filterRules('compound')">组合</button>
+      <button class="filter-btn" onclick="filterRules('exclusion')">排除</button>
+      <span style="flex:1"></span>
+      <button onclick="showAddRule()" style="background:var(--success);color:white;border:none;padding:4px 14px;border-radius:14px;font-size:12px;cursor:pointer;">＋ 新增</button>
+    </div>
+    <div style="max-height:50vh;overflow-y:auto;">
+      <table class="rules-table">
+        <thead><tr>
+          <th>ID</th><th>条件描述</th><th>科室</th><th>症状</th><th>严重度</th><th>类型</th><th>权重</th><th>操作</th>
+        </tr></thead>
+        <tbody id="rulesTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 规则编辑弹窗 -->
+<div class="modal-overlay" id="ruleEditModal" style="display:none">
+  <div class="modal-content" style="max-width:500px;">
+    <button class="modal-close" onclick="closeRuleEdit()">&times;</button>
+    <h2 style="font-size:18px;color:var(--primary);margin-bottom:16px;" id="ruleEditTitle">新增规则</h2>
+    <div class="form-row">
+      <label>症状</label>
+      <select id="ruleSymptom"></select>
+      <label>科室</label>
+      <select id="ruleDept"></select>
+    </div>
+    <div class="form-row">
+      <label>类型</label>
+      <select id="ruleType" onchange="toggleExtraSids()">
+        <option value="single">单症状</option>
+        <option value="compound">组合</option>
+        <option value="exclusion">排除</option>
+      </select>
+      <label>严重度</label>
+      <select id="ruleSeverity">
+        <option value="low">低</option><option value="medium" selected>中</option>
+        <option value="high">高</option><option value="critical">危急</option>
+      </select>
+      <label>权重</label>
+      <input type="number" id="ruleWeight" value="1.0" step="0.1" min="0.1" max="2.0">
+    </div>
+    <div class="form-row">
+      <label>条件</label>
+      <textarea id="ruleCond" placeholder="IF 发烧+咳嗽 THEN 呼吸内科"></textarea>
+    </div>
+    <div class="form-row" id="extraSidsRow" style="display:none">
+      <label>附加症状</label>
+      <textarea id="ruleExtraSids" placeholder="逗号分隔的症状ID，如 2,4"></textarea>
+    </div>
+    <div class="form-row">
+      <label>详细说明</label>
+      <textarea id="ruleDetail" placeholder="补充说明（可选）"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeRuleEdit()" style="background:#F5F5F5;color:#666;">取消</button>
+      <button onclick="saveRule()" style="background:var(--success);color:white;">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 历史弹窗（隐藏） -->
+<div class="modal-overlay" id="historyModal" style="display:none">
+  <div class="modal-content" id="historyContent">
+    <button class="modal-close" onclick="closeHistory()">&times;</button>
+    <h2 style="font-size:18px;color:var(--primary);margin-bottom:16px;">历史记录</h2>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<script>
+// ============================
+//  语音识别 — WAV编码 + Whisper后端
+// ============================
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+let micStream = null;
+
+async function startRecording() {
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // 通用 webm 格式（所有浏览器支持）
+    mediaRecorder = new MediaRecorder(micStream, { mimeType: 'audio/webm;codecs=opus' });
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) audioChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = async () => {
+      micStream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunks, { type: 'audio/webm' });
+      await processRecording(blob);
+    };
+
+    mediaRecorder.start(100); // 每100ms收集数据
+    isRecording = true;
+    document.getElementById('voiceBtn').classList.add('recording');
+    document.getElementById('voiceStatus').textContent = '正在聆听，请说话…';
+  } catch (err) {
+    console.error('Mic:', err.name, err.message);
+    let msg = '无法访问麦克风';
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError')
+      msg = '❌ 麦克风权限被拒绝，请在浏览器设置中允许';
+    else if (err.name === 'NotFoundError')
+      msg = '❌ 未检测到麦克风';
+    else if (err.name === 'NotReadableError')
+      msg = '❌ 麦克风被其他应用占用';
+    document.getElementById('voiceStatus').innerHTML = '<span style=\"color:#FF4D4F;\">' + msg + '</span>';
+  }
+}
+
+function stopRecording() {
+  if (!isRecording || !mediaRecorder) return;
+  isRecording = false;
+  document.getElementById('voiceStatus').textContent = '⏳ 识别中…';
+  try { mediaRecorder.stop(); } catch (e) {}
+}
+
+function resetVoice() {
+  isRecording = false;
+  document.getElementById('voiceBtn').classList.remove('recording');
+  mediaRecorder = null;
+  micStream = null;
+}
+
+// === WAV 编码 ===
+function encodeWAV(samples, sampleRate) {
+  const numChannels = 1;
+  const bitsPerSample = 16;
+  const byteRate = sampleRate * numChannels * bitsPerSample / 8;
+  const blockAlign = numChannels * bitsPerSample / 8;
+  const dataSize = samples.length * blockAlign;
+  const buffer = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(buffer);
+
+  function writeStr(offset, str) {
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  }
+  writeStr(0, 'RIFF');
+  view.setUint32(4, 36 + dataSize, true);
+  writeStr(8, 'WAVE');
+  writeStr(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitsPerSample, true);
+  writeStr(36, 'data');
+  view.setUint32(40, dataSize, true);
+
+  let offset = 44;
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    offset += 2;
+  }
+  return buffer;
+}
+
+async function processRecording(blob) {
+  try {
+    // 解码音频
+    const arrayBuffer = await blob.arrayBuffer();
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let audioBuffer;
+    try {
+      audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+      audioCtx.close();
+    } catch (e) {
+      audioCtx.close();
+      document.getElementById('voiceStatus').textContent = '音频解码失败，请重试';
+      resetVoice();
+      return;
+    }
+
+    // 转为 mono 16kHz
+    const targetRate = 16000;
+    const offlineCtx = new OfflineAudioContext(1, audioBuffer.duration * targetRate, targetRate);
+    const source = offlineCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(offlineCtx.destination);
+    source.start(0);
+    const rendered = await offlineCtx.startRendering();
+
+    // 编码为 WAV
+    const wavBuffer = encodeWAV(rendered.getChannelData(0), targetRate);
+    const wavBlob = new Blob([wavBuffer], { type: 'audio/wav' });
+
+    // 上传（设置30秒超时）
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    let resp, data;
+    try {
+      resp = await fetch('/api/voice', {
+        method: 'POST',
+        body: wavBlob,
+        signal: controller.signal
+      });
+      data = await resp.json();
+    } catch (fetchErr) {
+      clearTimeout(timeoutId);
+      if (fetchErr.name === 'AbortError') {
+        document.getElementById('voiceStatus').textContent = '❌ 识别超时，请重试';
+      } else {
+        document.getElementById('voiceStatus').textContent = '❌ 网络错误: ' + (fetchErr.message || '连接失败');
+      }
+      resetVoice();
+      return;
+    }
+    clearTimeout(timeoutId);
+
+    if (data.success && data.data && data.data.text) {
+      const text = data.data.text;
+      document.getElementById('textInput').value = text;
+      document.getElementById('voiceStatus').textContent = '✅ 识别: ' + text;
+      resetVoice();
+      setTimeout(() => submitDiagnose(), 300);
+    } else {
+      document.getElementById('voiceStatus').textContent =
+        '❌ ' + (data.message || '识别失败，请重试');
+      resetVoice();
+    }
+    // 清空 chunks
+    audioChunks = [];
+  } catch (err) {
+    console.error('Voice error:', err.name, err.message);
+    document.getElementById('voiceStatus').textContent =
+      '❌ ' + (err.message || '处理失败') + '，请重试';
+    resetVoice();
+  }
+}
+
+// 绑定事件
+['mousedown','touchstart'].forEach(evt => {
+  document.getElementById('voiceBtn').addEventListener(evt, (e) => {
+    e.preventDefault();
+    if (isRecording) return;
+    startRecording();
+  }, { passive: false });
+});
+['mouseup','touchend','touchcancel'].forEach(evt => {
+  document.getElementById('voiceBtn').addEventListener(evt, (e) => {
+    e.preventDefault();
+    stopRecording();
+  });
+});
+
+// ============================
+//  分诊逻辑
+// ============================
+document.getElementById('submitBtn').addEventListener('click', submitDiagnose);
+document.getElementById('textInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    submitDiagnose();
+  }
+});
+
+function addSymptom(name) {
+  const ta = document.getElementById('textInput');
+  ta.value = ta.value ? ta.value + '、' + name : name;
+  ta.focus();
+}
+
+async function submitDiagnose() {
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) {
+    showToast('请输入症状描述');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+  document.getElementById('voiceStatus').textContent = '分诊中…';
+
+  try {
+    const resp = await fetch('/api/diagnose', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    const data = await resp.json();
+
+    if (data.success) {
+      showResult(data.data);
+    } else {
+      showToast(data.message || '分诊失败');
+    }
+  } catch (err) {
+    showToast('网络错误，请重试');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '分诊';
+    document.getElementById('voiceStatus').textContent = '点击麦克风开始说话';
+  }
+}
+
+function showResult(data) {
+  const area = document.getElementById('resultArea');
+  const primary = data.primary || {};
+  const alts = data.alternatives || [];
+  const symptoms = data.symptoms || [];
+  const summary = data.symptom_summary || {};
+  const matchedRules = data.matched_rules || [];
+
+  const conf = Number(primary.confidence || 0);
+  const confPercent = Math.round(conf * 100);
+  let confColor = conf >= 0.9 ? '#52C41A' : conf >= 0.7 ? '#1890FF' : '#FAAD14';
+
+  // 严重度标签
+  const sevLabels = { critical: '🔴 危急', high: '🟠 紧急', medium: '🟡 常规', low: '🟢 轻微', normal: '' };
+  const sevLabel = sevLabels[primary.severity] || '';
+  const sevStyle = primary.severity === 'critical' ? 'background:#FFF1F0;color:#FF4D4F;border:1px solid #FFCCC7;'
+                 : primary.severity === 'high' ? 'background:#FFF7E6;color:#D48806;border:1px solid #FFD591;'
+                 : '';
+
+  // 触发规则数
+  const compoundHit = matchedRules.filter(r => r.rule_type === 'compound').length;
+  const criticalHit = matchedRules.filter(r => r.severity === 'critical' || r.severity === 'high').length;
+
+  area.innerHTML = `
+    <div class="card result-card">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="result-dept">${primary.dept_name || '未知'}</div>
+        ${sevLabel ? '<span style=\"padding:2px 10px;border-radius:10px;font-size:12px;font-weight:600;' + sevStyle + '\">' + sevLabel + '</span>' : ''}
+      </div>
+      <div class="result-floor">${primary.floor ? '📍 ' + primary.floor + '楼' : ''} ${primary.location_desc || ''}</div>
+      <div class="confidence-bar">
+        <div class="confidence-fill" style="width:${confPercent}%;background:${confColor}"></div>
+      </div>
+      <div style="font-size:13px;color:${confColor};margin-top:4px;">置信度: ${confPercent}%</div>
+      ${primary.reason ? '<div class="result-reason">分诊依据: ' + primary.reason + '</div>' : ''}
+      <div style="font-size:12px;color:var(--text-light);margin-top:6px;">
+        匹配症状: ${symptoms.map(s=>s.name).join('、')}
+        | 命中规则: ${matchedRules.length}条
+        ${compoundHit > 0 ? ' | 组合规则: ' + compoundHit + '条' : ''}
+        ${criticalHit > 0 ? ' | 高危规则: ' + criticalHit + '条' : ''}
+      </div>
+      ${alts.length ? '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">备选: ' + alts.map(a=>a.dept_name).join('、') + '</div>' : ''}
+      <button class="route-btn" onclick="showRoute(${primary.dept_id || 0}, '${primary.dept_name || ''}')">查看就诊路线</button>
+    </div>
+  `;
+  area.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================
+//  医院场景导航 (SVG楼层平面图)
+// ============================
+let hospitalData = null;
+let currentViewFloor = 1;
+let currentDeptId = 0;
+
+async function showRoute(deptId, deptName) {
+  currentDeptId = deptId;
+  document.getElementById('routeDeptName').textContent = deptName + ' 导航';
+  document.getElementById('routeSteps').innerHTML = '<span class="spinner" style="border-color:var(--primary);border-top-color:transparent;display:inline-block;"></span> 加载中…';
+  document.getElementById('routeModal').style.display = 'flex';
+
+  try {
+    // 加载医院地图
+    if (!hospitalData) {
+      const r = await fetch('/api/hospital/map');
+      hospitalData = (await r.json()).data;
+    }
+    // 加载路线
+    const r = await fetch('/api/hospital/route/' + deptId);
+    const d = await r.json();
+    if (d.success) {
+      currentViewFloor = d.data.floor;
+      renderFloorPlan();
+      renderFloorBtns();
+      document.getElementById('routeSteps').innerHTML = d.data.steps.map((s,i) =>
+        `<div style="display:flex;gap:8px;padding:4px 0;"><span style="color:var(--primary);font-weight:700;">${i+1}.</span> ${s}</div>`
+      ).join('');
+    }
+  } catch { document.getElementById('routeSteps').textContent = '加载失败'; }
+}
+
+function renderFloorBtns() {
+  if (!hospitalData) return;
+  const total = hospitalData.floors;
+  let html = '';
+  for (let f = 1; f <= total; f++) {
+    const active = f === currentViewFloor ? 'background:var(--primary);color:white;' : 'background:white;color:var(--primary);';
+    html += `<button onclick="switchFloor(${f})" style="padding:2px 12px;border-radius:12px;border:1px solid var(--primary);font-size:12px;cursor:pointer;${active}">${f}F</button>`;
+  }
+  document.getElementById('floorBtns').innerHTML = html;
+}
+
+function switchFloor(f) {
+  currentViewFloor = f;
+  renderFloorPlan();
+  renderFloorBtns();
+}
+
+async function renderFloorPlan() {
+  if (!hospitalData) return;
+  const svg = document.getElementById('floorSvg');
+  const floorData = hospitalData.floors_data[currentViewFloor];
+  if (!floorData) return;
+
+  const entrance = hospitalData.entrance;
+  const elevator = hospitalData.elevator;
+  let targetDept = null;
+  for (const d of floorData.departments) {
+    if (d.id === currentDeptId) { targetDept = d; break; }
+  }
+
+  let svgContent = '';
+
+  // 背景墙+走廊
+  svgContent += '<rect x="60" y="60" width="780" height="480" rx="8" fill="#F5F5F5" stroke="#D9D9D9" stroke-width="2"/>';
+  svgContent += '<rect x="400" y="60" width="80" height="480" fill="#E8E8E8" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="6,3"/>';
+  svgContent += '<text x="440" y="310" text-anchor="middle" font-size="11" fill="#999">走 廊</text>';
+
+  // 绘制设施
+  for (const f of (floorData.facilities || [])) {
+    svgContent += `<rect x="${f.x}" y="${f.y}" width="${f.w}" height="${f.h}" rx="6" fill="${f.color}" opacity="0.15" stroke="${f.color}" stroke-width="1.5"/>`;
+    svgContent += `<text x="${f.x+f.w/2}" y="${f.y+f.h/2-8}" text-anchor="middle" font-size="16">${f.icon||''}</text>`;
+    svgContent += `<text x="${f.x+f.w/2}" y="${f.y+f.h/2+14}" text-anchor="middle" font-size="11" fill="${f.color}" font-weight="600">${f.name}</text>`;
+  }
+
+  // 绘制科室
+  for (const d of floorData.departments) {
+    const isTarget = d.id === currentDeptId;
+    svgContent += `<rect x="${d.x}" y="${d.y}" width="${d.w}" height="${d.h}" rx="8" fill="${d.color}" opacity="${isTarget ? 0.25 : 0.1}" stroke="${d.color}" stroke-width="${isTarget ? 3 : 1.5}" ${isTarget ? 'stroke-dasharray="0"' : ''}/>`;
+    svgContent += `<text x="${d.x+d.w/2}" y="${d.y+d.h/2-6}" text-anchor="middle" font-size="13" fill="${d.color}" font-weight="${isTarget ? '800' : '600'}">${d.name}</text>`;
+    if (isTarget) {
+      svgContent += `<text x="${d.x+d.w/2}" y="${d.y+d.h/2+14}" text-anchor="middle" font-size="11" fill="${d.color}">📍 目标科室</text>`;
+    }
+  }
+
+  // 入口标记（一楼）
+  if (currentViewFloor === 1) {
+    svgContent += `<circle cx="${entrance.x}" cy="${entrance.y}" r="12" fill="#52C41A" stroke="white" stroke-width="2"/>`;
+    svgContent += `<text x="${entrance.x}" y="${entrance.y+28}" text-anchor="middle" font-size="11" fill="#52C41A" font-weight="700">🚪 入口</text>`;
+  }
+
+  // 电梯标记
+  svgContent += `<rect x="${elevator.x-20}" y="${elevator.y-20}" width="40" height="40" rx="8" fill="#1890FF" opacity="0.2" stroke="#1890FF" stroke-width="2"/>`;
+  svgContent += `<text x="${elevator.x}" y="${elevator.y+5}" text-anchor="middle" font-size="18">🛗</text>`;
+  svgContent += `<text x="${elevator.x}" y="${elevator.y+30}" text-anchor="middle" font-size="10" fill="#1890FF">电梯</text>`;
+
+  // 路径绘制
+  if (targetDept && currentViewFloor === 1) {
+    const tx = targetDept.x + targetDept.w/2;
+    const ty = targetDept.y + targetDept.h/2;
+    const pathColor = '#FF4D4F';
+    // 入口→导诊台→科室
+    svgContent += `<line x1="${entrance.x}" y1="${entrance.y}" x2="470" y2="460" stroke="${pathColor}" stroke-width="2.5" stroke-dasharray="8,4" opacity="0.7"/>`;
+    svgContent += `<line x1="470" y1="460" x2="${tx}" y2="${ty}" stroke="${pathColor}" stroke-width="2.5" stroke-dasharray="8,4" opacity="0.7"/>`;
+    // 箭头
+    svgContent += `<polygon points="${tx-6},${ty-10} ${tx+6},${ty-10} ${tx},${ty-2}" fill="${pathColor}" opacity="0.8"/>`;
+  } else if (targetDept && currentViewFloor > 1) {
+    // 电梯→目标科室
+    const tx = targetDept.x + targetDept.w/2;
+    const ty = targetDept.y + targetDept.h/2;
+    const pathColor = '#FF4D4F';
+    svgContent += `<line x1="${elevator.x}" y1="${elevator.y}" x2="${tx}" y2="${ty}" stroke="${pathColor}" stroke-width="2.5" stroke-dasharray="8,4" opacity="0.7"/>`;
+    svgContent += `<polygon points="${tx-6},${ty-10} ${tx+6},${ty-10} ${tx},${ty-2}" fill="${pathColor}" opacity="0.8"/>`;
+  }
+
+  // 楼层标签
+  svgContent += `<rect x="740" y="65" width="90" height="28" rx="6" fill="var(--primary)" opacity="0.9"/>`;
+  svgContent += `<text x="785" y="84" text-anchor="middle" font-size="13" fill="white" font-weight="700">${floorData.name}</text>`;
+
+  svg.innerHTML = svgContent;
+}
+
+function closeModal() {
+  document.getElementById('routeModal').style.display = 'none';
+}
+
+// ============================
+//  历史记录弹窗
+// ============================
+document.getElementById('historyBtn').addEventListener('click', async () => {
+  document.getElementById('historyList').innerHTML = '<div style="text-align:center;padding:20px;"><span class="spinner" style="border-color:var(--primary);border-top-color:transparent;"></span></div>';
+  document.getElementById('historyModal').style.display = 'flex';
+
+  try {
+    const resp = await fetch('/api/history');
+    const data = await resp.json();
+    if (data.success && data.data.length) {
+      document.getElementById('historyList').innerHTML = data.data.map(r => `
+        <div class="history-item">
+          <div class="history-text">${r.input_text || '无'}</div>
+          <div class="history-dept">${r.dept_name || '未分诊'}</div>
+          <div class="history-time">${r.create_time || ''}</div>
+        </div>
+      `).join('');
+    } else {
+      document.getElementById('historyList').innerHTML = '<p style="color:var(--text-light);text-align:center;">暂无历史记录</p>';
+    }
+  } catch {
+    document.getElementById('historyList').innerHTML = '<p style="color:var(--text-light);text-align:center;">加载失败</p>';
+  }
+});
+
+function closeHistory() {
+  document.getElementById('historyModal').style.display = 'none';
+}
+
+// 点击遮罩关闭
+document.getElementById('routeModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('historyModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeHistory();
+});
+
+// ============================
+//  Toast
+// ============================
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2100);
+}
+
+// ============================
+//  规则管理 (CRUD)
+// ============================
+let allRules = [];
+let currentFilter = 'all';
+let editingRuleId = null;
+
+document.getElementById('rulesBtn').addEventListener('click', loadRules);
+
+async function loadRules() {
+  document.getElementById('rulesTbody').innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;"><span class="spinner" style="border-color:var(--primary);border-top-color:transparent;display:inline-block;"></span></td></tr>';
+  document.getElementById('rulesModal').style.display = 'flex';
+  try {
+    const resp = await fetch('/api/rules');
+    const data = await resp.json();
+    if (data.success) {
+      allRules = data.data;
+      renderRules();
+    }
+  } catch { showToast('加载规则失败'); }
+}
+
+function renderRules() {
+  const filtered = currentFilter === 'all' ? allRules : allRules.filter(r => r.rule_type === currentFilter);
+  // 统计
+  const counts = { single: 0, compound: 0, exclusion: 0 };
+  allRules.forEach(r => counts[r.rule_type] = (counts[r.rule_type]||0) + 1);
+  document.getElementById('rulesStats').innerHTML =
+    `<span>总数: <strong>${allRules.length}</strong></span>` +
+    `<span>单症状: <strong>${counts.single}</strong></span>` +
+    `<span>组合: <strong>${counts.compound}</strong></span>` +
+    `<span>排除: <strong>${counts.exclusion}</strong></span>`;
+
+  const sevColors = { low: '#52C41A', medium: '#1890FF', high: '#FAAD14', critical: '#FF4D4F' };
+  const typeLabels = { single: '单症状', compound: '组合', exclusion: '排除' };
+
+  document.getElementById('rulesTbody').innerHTML = filtered.map(r => `
+    <tr>
+      <td>${r.rule_id}</td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.conditions}">${r.conditions}</td>
+      <td>${r.dept_name}</td>
+      <td>${r.symptom_name}</td>
+      <td><span class="sev-badge" style="background:${sevColors[r.severity]||'#888'}">${r.severity}</span></td>
+      <td>${typeLabels[r.rule_type]||r.rule_type}</td>
+      <td>${r.rule_weight}</td>
+      <td>
+        <button class="rule-action-btn" style="background:#E6F7FF;color:var(--primary);" onclick="editRule(${r.rule_id})">编辑</button>
+        <button class="rule-action-btn" style="background:#FFF1F0;color:var(--danger);" onclick="deleteRule(${r.rule_id})">删</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterRules(type) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderRules();
+}
+
+async function showAddRule() {
+  editingRuleId = null;
+  document.getElementById('ruleEditTitle').textContent = '新增规则';
+  document.getElementById('ruleType').value = 'single';
+  document.getElementById('ruleSeverity').value = 'medium';
+  document.getElementById('ruleWeight').value = '1.0';
+  document.getElementById('ruleCond').value = '';
+  document.getElementById('ruleDetail').value = '';
+  document.getElementById('ruleExtraSids').value = '';
+  toggleExtraSids();
+  await loadFormOptions();
+  document.getElementById('ruleEditModal').style.display = 'flex';
+}
+
+async function editRule(rid) {
+  const rule = allRules.find(r => r.rule_id === rid);
+  if (!rule) return;
+  editingRuleId = rid;
+  document.getElementById('ruleEditTitle').textContent = '编辑规则 #' + rid;
+  document.getElementById('ruleType').value = rule.rule_type;
+  document.getElementById('ruleSeverity').value = rule.severity;
+  document.getElementById('ruleWeight').value = rule.rule_weight;
+  document.getElementById('ruleCond').value = rule.conditions;
+  document.getElementById('ruleDetail').value = rule.conditions_detail || '';
+  try {
+    const ex = typeof rule.extra_symptom_ids === 'string' ? JSON.parse(rule.extra_symptom_ids) : rule.extra_symptom_ids;
+    document.getElementById('ruleExtraSids').value = Array.isArray(ex) ? ex.join(',') : '';
+  } catch { document.getElementById('ruleExtraSids').value = ''; }
+  toggleExtraSids();
+  await loadFormOptions(rule.symptom_id, rule.dept_id);
+  document.getElementById('ruleEditModal').style.display = 'flex';
+}
+
+async function loadFormOptions(sid, did) {
+  try {
+    const [sr, dr] = await Promise.all([fetch('/api/symptoms'), fetch('/api/departments')]);
+    const [ss, ds] = await Promise.all([sr.json(), dr.json()]);
+    document.getElementById('ruleSymptom').innerHTML = (ss.data||[]).map(s =>
+      `<option value="${s.symptom_id}" ${sid===s.symptom_id?'selected':''}>${s.symptom_name}</option>`
+    ).join('');
+    document.getElementById('ruleDept').innerHTML = (ds.data||[]).map(d =>
+      `<option value="${d.dept_id}" ${did===d.dept_id?'selected':''}>${d.dept_name}</option>`
+    ).join('');
+  } catch { showToast('加载选项失败'); }
+}
+
+function toggleExtraSids() {
+  document.getElementById('extraSidsRow').style.display =
+    document.getElementById('ruleType').value === 'compound' ? 'flex' : 'none';
+}
+
+async function saveRule() {
+  const data = {
+    symptom_id: parseInt(document.getElementById('ruleSymptom').value),
+    dept_id: parseInt(document.getElementById('ruleDept').value),
+    rule_type: document.getElementById('ruleType').value,
+    severity: document.getElementById('ruleSeverity').value,
+    rule_weight: parseFloat(document.getElementById('ruleWeight').value),
+    conditions: document.getElementById('ruleCond').value,
+    conditions_detail: document.getElementById('ruleDetail').value,
+    extra_symptom_ids: [],
+    is_active: 1
+  };
+  if (data.rule_type === 'compound') {
+    data.extra_symptom_ids = document.getElementById('ruleExtraSids').value
+      .split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+  }
+  try {
+    let resp;
+    if (editingRuleId) {
+      resp = await fetch('/api/rules?rule_id=' + editingRuleId, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } else {
+      resp = await fetch('/api/rules', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    }
+    const result = await resp.json();
+    showToast(result.message || '保存成功');
+    if (result.success) {
+      closeRuleEdit();
+      loadRules();
+    }
+  } catch { showToast('保存失败'); }
+}
+
+async function deleteRule(rid) {
+  if (!confirm('确定删除规则 #' + rid + '？')) return;
+  try {
+    const resp = await fetch('/api/rules?rule_id=' + rid, { method: 'DELETE' });
+    const result = await resp.json();
+    showToast(result.message);
+    if (result.success) loadRules();
+  } catch { showToast('删除失败'); }
+}
+
+function closeRules() { document.getElementById('rulesModal').style.display = 'none'; }
+function closeRuleEdit() { document.getElementById('ruleEditModal').style.display = 'none'; }
+document.getElementById('rulesModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeRules(); });
+document.getElementById('ruleEditModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeRuleEdit(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="800" viewBox="0 0 1100 800">
+<defs>
+<marker id="modarr" markerWidth="10" markerHeight="8" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1890FF"/></marker>
+<style>text{font-family:"Microsoft YaHei","SimHei",sans-serif;}</style>
+</defs>
+<rect width="1100" height="800" fill="#F5F5F5"/>
+<text x="550" y="38" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">智能导医系统 — 功能模块划分图</text>
+<rect x="50" y="65" width="1000" height="650" fill="none" stroke="#1890FF" stroke-width="3" rx="16"/>
+<rect x="120" y="55" width="220" height="28" fill="#1890FF" rx="6"/>
+<text x="230" y="74" font-size="14" font-weight="bold" text-anchor="middle" fill="white">智能导医系统</text>
+<rect x="120" y="120" width="190" height="68" fill="#E8F4FD" rx="10" stroke="#1890FF" stroke-width="2"/>
+<text x="215" y="159" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">语音输入模块</text>
+<rect x="350" y="120" width="190" height="68" fill="#E8F4FD" rx="10" stroke="#1890FF" stroke-width="2"/>
+<text x="445" y="159" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">症状提取模块</text>
+<rect x="580" y="120" width="190" height="68" fill="#E8F4FD" rx="10" stroke="#1890FF" stroke-width="2"/>
+<text x="675" y="159" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">智能分诊模块</text>
+<rect x="810" y="120" width="190" height="68" fill="#E8F4FD" rx="10" stroke="#1890FF" stroke-width="2"/>
+<text x="905" y="159" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">楼层引导模块</text>
+<rect x="120" y="240" width="190" height="68" fill="#FFF3E0" rx="10" stroke="#FA8C16" stroke-width="2"/>
+<text x="215" y="279" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">历史记录模块</text>
+<rect x="350" y="240" width="190" height="68" fill="#FFF3E0" rx="10" stroke="#FA8C16" stroke-width="2"/>
+<text x="445" y="279" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">系统管理模块</text>
+<rect x="580" y="240" width="190" height="68" fill="#E8F5E9" rx="10" stroke="#52C41A" stroke-width="2"/>
+<text x="675" y="279" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">专家系统推理机</text>
+<rect x="810" y="240" width="190" height="68" fill="#E8F5E9" rx="10" stroke="#52C41A" stroke-width="2"/>
+<text x="905" y="279" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">深度学习模型</text>
+<rect x="120" y="370" width="200" height="68" fill="#FCE4EC" rx="10" stroke="#EB2F96" stroke-width="2"/>
+<text x="220" y="409" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">SQLite数据库</text>
+<rect x="360" y="370" width="180" height="68" fill="#FCE4EC" rx="10" stroke="#EB2F96" stroke-width="2"/>
+<text x="450" y="409" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">症状知识库</text>
+<rect x="580" y="370" width="180" height="68" fill="#FCE4EC" rx="10" stroke="#EB2F96" stroke-width="2"/>
+<text x="670" y="409" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">规则库</text>
+<rect x="790" y="370" width="210" height="68" fill="#FCE4EC" rx="10" stroke="#EB2F96" stroke-width="2"/>
+<text x="895" y="409" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">科室楼层数据</text>
+<rect x="250" y="500" width="210" height="68" fill="#F9F0FF" rx="10" stroke="#722ED1" stroke-width="2"/>
+<text x="355" y="539" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">语音识别API</text>
+<rect x="540" y="500" width="210" height="68" fill="#F9F0FF" rx="10" stroke="#722ED1" stroke-width="2"/>
+<text x="645" y="539" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">GUI界面</text>
+<line x1="310" y1="154" x2="350" y2="154" stroke="#1890FF" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="540" y1="154" x2="580" y2="154" stroke="#1890FF" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="154" x2="810" y2="154" stroke="#1890FF" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="154" x2="580" y2="274" stroke="#52C41A" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="274" x2="810" y2="274" stroke="#52C41A" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="154" x2="120" y2="404" stroke="#EB2F96" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="274" x2="580" y2="404" stroke="#EB2F96" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="1000" y1="154" x2="790" y2="404" stroke="#FA8C16" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="154" x2="120" y2="274" stroke="#FA8C16" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="310" y1="154" x2="250" y2="534" stroke="#722ED1" stroke-width="2" marker-end="url(#modarr)"/>
+<line x1="770" y1="154" x2="540" y2="534" stroke="#722ED1" stroke-width="2" marker-end="url(#modarr)"/>
+<text x="550" y="782" font-size="12" text-anchor="middle" fill="#888">图3：系统功能模块划分（展示各模块的职责与关联关系）</text>
+</svg>

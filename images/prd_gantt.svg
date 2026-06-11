@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 410" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <text x="450" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">项目排期甘特图</text>
+
+  <!-- 时间轴表头 -->
+  <rect x="200" y="40" width="680" height="25" fill="#FAFAFA"/>
+  <text x="200" y="57" font-size="9" fill="#999">第1周</text>
+  <text x="313" y="57" font-size="9" fill="#999">第2周</text>
+  <text x="426" y="57" font-size="9" fill="#999">第3周</text>
+  <text x="540" y="57" font-size="9" fill="#999">第4周</text>
+  <text x="653" y="57" font-size="9" fill="#999">第5周</text>
+  <text x="766" y="57" font-size="9" fill="#999">第6周</text>
+
+  <line x1="200" y1="40" x2="200" y2="390" stroke="#E8E8E8"/>
+  <line x1="313" y1="40" x2="313" y2="390" stroke="#E8E8E8"/>
+  <line x1="426" y1="40" x2="426" y2="390" stroke="#E8E8E8"/>
+  <line x1="540" y1="40" x2="540" y2="390" stroke="#E8E8E8"/>
+  <line x1="653" y1="40" x2="653" y2="390" stroke="#E8E8E8"/>
+  <line x1="766" y1="40" x2="766" y2="390" stroke="#E8E8E8"/>
+
+  <!-- 阶段1: PRD -->
+  <rect x="10" y="75" width="180" height="38" rx="4" fill="#F0F5FF"/>
+  <text x="100" y="90" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段1: 需求与PRD</text>
+  <text x="100" y="105" text-anchor="middle" font-size="8" fill="#888">梁耀辉</text>
+  <rect x="200" y="82" width="113" height="24" rx="6" fill="#1890FF"/>
+  <text x="257" y="98" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第1周</text>
+
+  <!-- 阶段2: 架构设计 -->
+  <rect x="10" y="125" width="180" height="38" rx="4" fill="#F6FFED"/>
+  <text x="100" y="140" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段2: 架构设计</text>
+  <text x="100" y="155" text-anchor="middle" font-size="8" fill="#888">许欢 王志强 张若岩</text>
+  <rect x="200" y="132" width="113" height="24" rx="6" fill="#52C41A"/>
+  <text x="257" y="148" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第1周</text>
+
+  <!-- 阶段3: 专家系统 -->
+  <rect x="10" y="175" width="180" height="38" rx="4" fill="#FFF7E6"/>
+  <text x="100" y="190" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段3: 专家系统</text>
+  <text x="100" y="205" text-anchor="middle" font-size="8" fill="#888">邱良梓</text>
+  <rect x="313" y="182" width="226" height="24" rx="6" fill="#FA8C16"/>
+  <text x="426" y="198" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第2-3周</text>
+
+  <!-- 阶段4: 算法模块 -->
+  <rect x="10" y="225" width="180" height="38" rx="4" fill="#F0F5FF"/>
+  <text x="100" y="240" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段4: 算法模块</text>
+  <text x="100" y="255" text-anchor="middle" font-size="8" fill="#888">梁耀辉</text>
+  <rect x="313" y="232" width="226" height="24" rx="6" fill="#1890FF"/>
+  <text x="426" y="248" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第2-3周</text>
+
+  <!-- 阶段5: GUI -->
+  <rect x="10" y="275" width="180" height="38" rx="4" fill="#FFF0F6"/>
+  <text x="100" y="290" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段5: GUI开发</text>
+  <text x="100" y="305" text-anchor="middle" font-size="8" fill="#888">马一鹏 张治文</text>
+  <rect x="426" y="282" width="226" height="24" rx="6" fill="#EB2F96"/>
+  <text x="540" y="298" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第3-4周</text>
+
+  <!-- 阶段6: 集成测试 -->
+  <rect x="10" y="325" width="180" height="38" rx="4" fill="#F6FFED"/>
+  <text x="100" y="340" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段6: 集成测试</text>
+  <text x="100" y="355" text-anchor="middle" font-size="8" fill="#888">朱益暄</text>
+  <rect x="653" y="332" width="113" height="24" rx="6" fill="#52C41A"/>
+  <text x="710" y="348" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第5周</text>
+
+  <!-- 阶段7: 优化验收 -->
+  <rect x="10" y="375" width="180" height="30" rx="4" fill="#F0F5FF"/>
+  <text x="100" y="393" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">阶段7: 优化验收</text>
+  <rect x="766" y="380" width="113" height="24" rx="6" fill="#1890FF"/>
+  <text x="823" y="396" text-anchor="middle" font-size="9" fill="white" font-weight="bold">第6周</text>
+
+  <!-- 里程碑 -->
+  <line x1="766" y1="40" x2="766" y2="405" stroke="#FF4D4F" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="860" y="75" font-size="9" fill="#FF4D4F" font-weight="bold">答辩</text>
+</svg>

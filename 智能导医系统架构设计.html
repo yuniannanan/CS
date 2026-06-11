@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=2480, initial-scale=1">
+    <title>智能导医系统架构设计文档</title>
+    
+<style>
+@page {
+    size: A4;
+    margin: 1.5cm 1.5cm;
+}
+body {
+    font-family: "Microsoft YaHei", "SimHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #333;
+    max-width: 100%;
+}
+h1 {
+    font-size: 22pt;
+    color: #1a1a1a;
+    border-bottom: 2px solid #1890FF;
+    padding-bottom: 8px;
+    margin-top: 30pt;
+    page-break-before: always;
+}
+h1:first-of-type {
+    page-break-before: auto;
+}
+h2 {
+    font-size: 16pt;
+    color: #2c2c2c;
+    border-left: 4px solid #1890FF;
+    padding-left: 12px;
+    margin-top: 24pt;
+}
+h3 {
+    font-size: 13pt;
+    color: #333;
+    margin-top: 18pt;
+}
+h4 {
+    font-size: 11.5pt;
+    color: #444;
+    margin-top: 14pt;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12pt 0;
+    font-size: 10pt;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    text-align: left;
+}
+th {
+    background-color: #f0f5ff;
+    font-weight: bold;
+}
+tr:nth-child(even) {
+    background-color: #fafafa;
+}
+code {
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10pt;
+}
+pre {
+    background-color: #f8f8f8;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    border-left: 3px solid #1890FF;
+}
+pre code {
+    background-color: transparent;
+    padding: 0;
+}
+blockquote {
+    border-left: 4px solid #52C41A;
+    margin: 10pt 0;
+    padding: 8px 16px;
+    background-color: #f6ffed;
+    color: #333;
+}
+ul, ol {
+    margin: 8pt 0;
+    padding-left: 24pt;
+}
+li {
+    margin: 4pt 0;
+}
+strong {
+    color: #1a1a1a;
+}
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20pt 0;
+}
+a {
+    color: #1890FF;
+    text-decoration: none;
+}
+.toc {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 20pt;
+}
+.mermaid {
+    display: none;
+}
+img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 12pt auto;
+    image-rendering: auto;
+}
+p:has(img) {
+    text-align: center;
+}
+p img + em,
+p img + br + em {
+    display: block;
+    text-align: center;
+    font-size: 9pt;
+    color: #888;
+    margin-top: 6pt;
+}
+</style>
+
+</head>
+<body>
+<h1 id="_1">智能导医系统架构设计文档</h1>
+<p><strong>文档版本：</strong> V1.0<br />
+<strong>修订日期：</strong> 2026-05-26<br />
+<strong>产品名称：</strong> 智能导医系统<br />
+<strong>撰写人：</strong> 课程设计小组  </p>
+<hr />
+<h2 id="_2">目录</h2>
+<ol>
+<li><a href="#1-项目概述">项目概述</a></li>
+<li><a href="#2-需求分析">需求分析</a></li>
+<li><a href="#3-系统总体架构">系统总体架构</a></li>
+<li><a href="#4-功能模块设计">功能模块设计</a></li>
+<li><a href="#5-技术选型">技术选型</a></li>
+<li><a href="#6-数据库设计">数据库设计</a></li>
+<li><a href="#7-核心接口设计">核心接口设计</a></li>
+<li><a href="#8-部署架构">部署架构</a></li>
+<li><a href="#9-风险与扩展性">风险与扩展性</a></li>
+</ol>
+<hr />
+<h2 id="1">1. 项目概述</h2>
+<h3 id="11">1.1 项目背景</h3>
+<p>当前医院就诊流程繁琐，人工导诊人员工作压力大，患者常因不熟悉科室布局、不清楚症状对应科室，出现分诊错误、就诊延误等问题。据统计，85%的首诊患者不知该挂何科室，平均候诊时间达1.8小时。大型医院楼层多、科室分散，院内导航困难，信息不对称问题突出。</p>
+<p>在"健康中国2030"战略推进与老龄化加剧的背景下，智慧医疗市场规模预计在2025年达300亿元，年复合增长率35%。《互联网诊疗管理办法》等政策的出台，为智能导医类产品提供了广阔的发展空间。</p>
+<h3 id="12">1.2 产品定位</h3>
+<p>面向医院门诊场景的 <strong>AI 智能导医原型系统</strong>，基于<strong>符号主义专家系统规则推理 + 深度学习技术混合架构</strong>，为患者提供<strong>语音问诊、症状智能识别、自动分诊、科室楼层导航</strong>一站式服务，替代/辅助人工导诊，简化就诊流程，提升医院门诊服务效率。</p>
+<h3 id="13">1.3 核心目标</h3>
+<table>
+<thead>
+<tr>
+<th>目标维度</th>
+<th>短期目标</th>
+<th>长期目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>功能范围</td>
+<td>支持18种常见症状、10个科室智能分诊</td>
+<td>扩展症状库至50+种，支持多轮对话式问诊</td>
+</tr>
+<tr>
+<td>分诊准确率</td>
+<td>≥ 90%</td>
+<td>≥ 95%</td>
+</tr>
+<tr>
+<td>导航准确率</td>
+<td>楼层引导路线100%准确</td>
+<td>支持AR实景导航</td>
+</tr>
+<tr>
+<td>交互方式</td>
+<td>语音输入、文字输入双模式</td>
+<td>增加人脸识别、多语言支持</td>
+</tr>
+<tr>
+<td>稳定性</td>
+<td>连续运行30分钟无崩溃</td>
+<td>对接医院HIS挂号系统，实现分诊-挂号一体化</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14">1.4 核心价值</h3>
+<p><strong>患者端价值：</strong><br />
+- <strong>快速分诊</strong>：AI自动匹配科室，避免因医学知识不足导致的分诊错误<br />
+- <strong>精准导航</strong>：明确科室位置与就诊路线，减少寻路时间<br />
+- <strong>便捷操作</strong>：支持语音输入，降低中老年用户操作门槛<br />
+- <strong>减少等待</strong>：自助导诊无需排队，提升就诊体验</p>
+<p><strong>医院端价值：</strong><br />
+- <strong>降本增效</strong>：减轻人工导诊人员工作压力，降低人力成本<br />
+- <strong>提升流转</strong>：优化门诊就诊流程，提升患者流转效率<br />
+- <strong>服务升级</strong>：智能化服务提升医院整体形象与患者满意度</p>
+<p><strong>教学价值：</strong><br />
+- 验证经典AI（专家系统）与现代深度学习技术在医疗场景的融合应用<br />
+- 通过完整产品开发流程，提升团队工程实践与协作能力</p>
+<h3 id="15">1.5 适用场景</h3>
+<ol>
+<li><strong>首次就医场景</strong>：患者首次到院，不了解医院科室设置</li>
+<li><strong>多症状复杂场景</strong>：患者同时出现多种症状，无法判断优先就诊科室</li>
+<li><strong>寻路导航场景</strong>：患者已知就诊科室，但找不到具体楼层与位置</li>
+<li><strong>高峰繁忙场景</strong>：门诊高峰时段人工导诊排队，患者需快速自助导诊</li>
+<li><strong>中老年就医场景</strong>：老年患者不擅长文字输入，需要语音交互</li>
+</ol>
+<hr />
+<h2 id="2">2. 需求分析</h2>
+<h3 id="21">2.1 功能需求</h3>
+<h4 id="211">2.1.1 核心功能清单</h4>
+<table>
+<thead>
+<tr>
+<th>功能模块</th>
+<th>功能描述</th>
+<th>优先级</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语音问诊模块</td>
+<td>支持语音输入症状，自动转换为文字</td>
+<td>高</td>
+<td>调用语音识别API实现</td>
+</tr>
+<tr>
+<td>文字输入模块</td>
+<td>支持键盘文字输入症状描述</td>
+<td>高</td>
+<td>语音识别失败时的备用方案</td>
+</tr>
+<tr>
+<td>症状提取模块</td>
+<td>从输入文本中自动识别核心症状与伴随症状</td>
+<td>高</td>
+<td>基于规则匹配 + 文本分类</td>
+</tr>
+<tr>
+<td>智能分诊模块</td>
+<td>基于症状推理给出最优科室建议</td>
+<td>高</td>
+<td>专家系统规则库 + 正向推理机</td>
+</tr>
+<tr>
+<td>楼层引导模块</td>
+<td>生成从导诊台到目标科室的详细文字路线</td>
+<td>高</td>
+<td>基于科室楼层数据库</td>
+</tr>
+<tr>
+<td>多症状综合推理</td>
+<td>支持同时输入多种症状进行加权分诊</td>
+<td>高</td>
+<td>多规则加权计算</td>
+</tr>
+<tr>
+<td>模糊症状追问</td>
+<td>症状信息不全时主动提示补充</td>
+<td>中</td>
+<td>提升分诊准确率</td>
+</tr>
+<tr>
+<td>分诊历史记录</td>
+<td>查看近期分诊记录与就诊建议</td>
+<td>中</td>
+<td>便于复诊参考</td>
+</tr>
+<tr>
+<td>异常场景处理</td>
+<td>识别失败/无匹配症状时给出友好提示</td>
+<td>中</td>
+<td>引导至人工导诊</td>
+</tr>
+<tr>
+<td>科室信息查询</td>
+<td>查看各科室简介、出诊医生信息</td>
+<td>低</td>
+<td>扩展功能</td>
+</tr>
+</tbody>
+</table>
+<h4 id="212">2.1.2 功能详细描述</h4>
+<p><strong>1. 语音问诊功能</strong></p>
+<p>用户长按语音按钮进行说话，松开按钮后自动调用语音识别API将语音转换为文字。</p>
+<p>操作流程：<br />
+1. 用户进入首页，点击并长按"按住说话"按钮<br />
+2. 用户口述症状描述（如"我发烧咳嗽，喉咙也痛"）<br />
+3. 松开按钮，系统调用语音识别接口进行识别<br />
+4. 识别成功后，在输入框显示识别出的文字<br />
+5. 用户可点击"确认"提交，或点击"重录"重新输入</p>
+<p>异常场景处理：<br />
+- 识别失败：提示"抱歉，未听清您的描述，请重新说话或使用文字输入"<br />
+- 网络异常：提示"网络连接异常，请检查网络后重试，或切换至文字输入"</p>
+<p><strong>2. 症状提取功能</strong></p>
+<p>从用户输入的自然语言文本中，基于症状库进行分词匹配，提取核心症状和伴随症状。</p>
+<p>操作流程：<br />
+1. 接收用户输入的文本（语音转文字或直接文字输入）<br />
+2. 进行中文分词处理，提取关键词<br />
+3. 与系统症状库进行模糊匹配，识别有效症状<br />
+4. 输出结构化的症状列表（核心症状 + 伴随症状）<br />
+5. 在界面上高亮显示已识别的症状</p>
+<p>异常场景处理：<br />
+- 无有效症状：提示"未识别到有效症状，请更详细地描述您的不适，例如：发烧、咳嗽"<br />
+- 症状模糊：提示"您描述的症状较模糊，是否有发烧、疼痛等具体感受？"</p>
+<p><strong>3. 智能分诊功能</strong></p>
+<p>基于IF-THEN专家系统规则库，采用正向推理机制，根据提取的症状进行规则匹配，通过加权计算得出最优科室建议。</p>
+<p>操作流程：<br />
+1. 接收症状提取模块输出的症状列表<br />
+2. 加载专家系统规则库，进行规则匹配<br />
+3. 对匹配到的多条规则进行置信度加权计算<br />
+4. 按置信度排序，输出TOP1科室建议<br />
+5. 显示分诊结果、科室简介、分诊依据</p>
+<p>异常场景处理：<br />
+- 多科室冲突：显示"根据您的症状，建议优先就诊【XX科室】，如伴有明显XX症状也可选择【YY科室】"<br />
+- 无匹配规则：提示"您的症状较为特殊，建议前往1楼导诊台咨询人工导诊"</p>
+<p><strong>4. 楼层引导功能</strong></p>
+<p>根据分诊结果中的科室信息，查询科室楼层数据库，结合楼层布局数据，生成标准化的文字引导路线。</p>
+<p>操作流程：<br />
+1. 用户在分诊结果页点击"查看路线"按钮<br />
+2. 系统查询目标科室的楼层与位置信息<br />
+3. 结合楼层布局（电梯、楼梯位置），生成引导路线<br />
+4. 以清晰的文字展示从1楼导诊台到目标科室的完整路线<br />
+5. 显示科室所在楼层、具体位置、标志性参照物</p>
+<h3 id="22">2.2 非功能需求</h3>
+<h4 id="221">2.2.1 性能需求</h4>
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>要求标准</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单次分诊响应时间</td>
+<td>≤ 3秒</td>
+<td>从提交症状到显示分诊结果</td>
+</tr>
+<tr>
+<td>语音识别响应时间</td>
+<td>≤ 2秒</td>
+<td>从松开按钮到显示文字</td>
+</tr>
+<tr>
+<td>路线生成响应时间</td>
+<td>≤ 1秒</td>
+<td>点击查看路线到显示结果</td>
+</tr>
+<tr>
+<td>系统稳定性</td>
+<td>连续运行30分钟无崩溃</td>
+<td>满足课程设计演示要求</td>
+</tr>
+<tr>
+<td>并发支持</td>
+<td>支持单人连续操作无卡顿</td>
+<td>原型系统单用户使用</td>
+</tr>
+<tr>
+<td>内存占用</td>
+<td>≤ 500MB</td>
+<td>确保在普通PC上流畅运行</td>
+</tr>
+</tbody>
+</table>
+<h4 id="222">2.2.2 兼容性需求</h4>
+<table>
+<thead>
+<tr>
+<th>兼容维度</th>
+<th>要求标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统</td>
+<td>Windows 10及以上版本</td>
+</tr>
+<tr>
+<td>运行环境</td>
+<td>Python 3.8+，JDK 1.8+</td>
+</tr>
+<tr>
+<td>屏幕分辨率</td>
+<td>1920×1080及以上，支持自适应缩放</td>
+</tr>
+<tr>
+<td>硬件要求</td>
+<td>普通PC即可，需配备麦克风（语音输入用）</td>
+</tr>
+<tr>
+<td>网络要求</td>
+<td>语音识别需联网，基础分诊功能可离线运行</td>
+</tr>
+</tbody>
+</table>
+<h4 id="223">2.2.3 安全性需求</h4>
+<table>
+<thead>
+<tr>
+<th>安全维度</th>
+<th>要求标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户隐私</td>
+<td>不存储患者姓名、身份证号等敏感隐私数据</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>分诊历史记录仅本地缓存，不上传云端</td>
+</tr>
+<tr>
+<td>离线能力</td>
+<td>基础专家系统分诊可离线使用，不依赖网络</td>
+</tr>
+<tr>
+<td>数据备份</td>
+<td>知识库、规则库定期备份，防止数据丢失</td>
+</tr>
+<tr>
+<td>访问控制</td>
+<td>管理员配置功能需密码验证，防止误操作</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3">3. 系统总体架构</h2>
+<h3 id="31">3.1 架构设计原则</h3>
+<p>本项目采用 <strong>"专家系统 + 深度学习"混合架构</strong>，兼顾经典AI方法与现代深度学习技术，既降低开发难度，又提升系统智能化水平。架构设计遵循以下原则：</p>
+<ul>
+<li><strong>分层解耦</strong>：各层职责清晰，层间通过标准接口通信</li>
+<li><strong>模块化设计</strong>：功能模块独立开发、独立测试、易于扩展</li>
+<li><strong>混合推理</strong>：符号主义规则推理与深度学习模型协同工作</li>
+<li><strong>离线优先</strong>：核心分诊功能不依赖网络，确保系统可用性</li>
+</ul>
+<h3 id="32">3.2 四层架构设计</h3>
+<p>系统采用四层架构设计，从下到上依次为：</p>
+<p><img alt="四层架构图" src="images/fig1_architecture.png" /></p>
+<p><em>图1：系统四层架构（交互展示层 → 业务逻辑层 → 算法推理层 → 数据层）</em></p>
+<h3 id="33">3.3 核心架构说明</h3>
+<p><strong>数据层：</strong><br />
+- <strong>SQLite数据库</strong>：存储科室信息、楼层布局、分诊历史记录<br />
+- <strong>症状知识库</strong>：包含18种核心症状及其属性定义<br />
+- <strong>规则库</strong>：IF-THEN格式的医疗分诊规则集<br />
+- <strong>科室楼层数据</strong>：10个科室的位置信息与楼层分布</p>
+<p><strong>算法推理层：</strong><br />
+- <strong>专家系统推理机</strong>：基于正向推理机制，实现规则匹配与加权计算<br />
+- <strong>深度学习模型</strong>：症状文本分类模型，提升模糊症状识别准确率<br />
+- <strong>症状提取引擎</strong>：基于分词与模糊匹配的症状识别模块<br />
+- <strong>语音转文本引擎</strong>：调用第三方语音识别API（如百度语音、讯飞）</p>
+<p><strong>业务逻辑层：</strong><br />
+- <strong>分诊流程控制</strong>：协调各模块完成"输入→提取→推理→输出"全流程<br />
+- <strong>症状管理模块</strong>：管理症状的生命周期与状态<br />
+- <strong>历史记录模块</strong>：分诊记录的存储、查询与展示<br />
+- <strong>异常处理模块</strong>：无匹配、识别失败等异常场景的统一处理</p>
+<p><strong>交互展示层：</strong><br />
+- <strong>GUI界面模块</strong>：基于PyQt/Tkinter的桌面应用程序界面<br />
+- <strong>语音交互模块</strong>：语音按钮交互与识别状态管理<br />
+- <strong>路线展示模块</strong>：文字路线生成与可视化展示</p>
+<h3 id="34">3.4 数据流转图</h3>
+<p><img alt="数据流转时序图" src="images/fig2_sequence.png" /></p>
+<p><em>图2：系统数据流转时序图（展示用户、界面与各模块间的交互顺序）</em></p>
+<hr />
+<h2 id="4">4. 功能模块设计</h2>
+<h3 id="41">4.1 模块划分总览</h3>
+<p><img alt="功能模块划分图" src="images/fig3_modules.png" /></p>
+<p><em>图3：系统功能模块划分（展示各模块的职责与关联关系）</em></p>
+<h3 id="42">4.2 模块详细设计</h3>
+<h4 id="421">4.2.1 语音输入模块</h4>
+<p><strong>职责：</strong> 提供语音与文字两种输入方式，将用户的症状描述转换为系统可处理的文本。</p>
+<p><strong>核心组件：</strong><br />
+- 语音采集器：调用麦克风采集音频数据<br />
+- 语音识别代理：封装第三方ASR API调用<br />
+- 文字输入框：支持键盘输入的备用方案<br />
+- 快捷症状按钮：发烧、咳嗽、头痛等常见症状一键输入</p>
+<p><strong>输入：</strong> 音频流 / 键盘文字<br />
+<strong>输出：</strong> 结构化文本（症状描述）</p>
+<h4 id="422">4.2.2 症状提取模块</h4>
+<p><strong>职责：</strong> 从自然语言文本中识别并提取有效症状关键词。</p>
+<p><strong>核心组件：</strong><br />
+- 中文分词器：jieba分词处理<br />
+- 症状匹配器：与症状库进行精确/模糊匹配<br />
+- 权重计算器：计算症状的置信度与优先级<br />
+- 追问生成器：症状信息不足时生成补充问题</p>
+<p><strong>输入：</strong> 自然语言文本<br />
+<strong>输出：</strong> 症状列表 [{症状名, 类型, 置信度}]</p>
+<p><strong>匹配算法：</strong><br />
+<div class="highlight"><pre><span></span><code>1. 对输入文本进行jieba分词
+2. 对每个词项，在症状库中进行：
+   a. 精确匹配 → 置信度 = 1.0
+   b. 模糊匹配（编辑距离≤2）→ 置信度 = 0.8
+   c. 同义词匹配 → 置信度 = 0.9
+3. 过滤置信度 &lt; 0.5 的匹配项
+4. 按置信度降序排列，取TOP-N
+5. 若无有效匹配，触发追问逻辑
+</code></pre></div></p>
+<h4 id="423">4.2.3 智能分诊模块</h4>
+<p><strong>职责：</strong> 基于提取的症状，通过专家系统推理得出最优科室建议。</p>
+<p><strong>核心组件：</strong><br />
+- 规则加载器：加载IF-THEN规则库<br />
+- 正向推理机：从症状出发匹配规则<br />
+- 加权计算器：多规则冲突时的加权投票<br />
+- 结果排序器：按置信度排序输出</p>
+<p><strong>输入：</strong> 症状列表<br />
+<strong>输出：</strong> 分诊结果 [{科室, 置信度, 分诊依据, 备选科室}]</p>
+<p><strong>推理算法：</strong><br />
+<div class="highlight"><pre><span></span><code>1. 初始化工作内存（加载症状列表）
+2. 遍历规则库，匹配条件包含当前症状的规则
+3. 对匹配的规则：
+   a. 单症状规则：置信度 = 规则基础权重
+   b. 多症状规则：置信度 = 规则基础权重 × 症状匹配数 / 规则要求症状数
+4. 按科室汇总所有匹配规则的加权置信度
+5. 取置信度最高的科室作为主推荐
+6. 若TOP1与TOP2置信度差 &lt; 0.1，输出备选建议
+</code></pre></div></p>
+<h4 id="424">4.2.4 楼层引导模块</h4>
+<p><strong>职责：</strong> 根据分诊结果生成从导诊台到目标科室的文字导航路线。</p>
+<p><strong>核心组件：</strong><br />
+- 科室定位器：查询科室楼层与位置<br />
+- 路线生成器：基于楼层数据生成引导文本<br />
+- 参照物提示器：提供标志性建筑辅助定位</p>
+<p><strong>输入：</strong> 目标科室ID<br />
+<strong>输出：</strong> 文字导航路线 + 楼层位置信息</p>
+<p><strong>路线模板示例：</strong><br />
+<div class="highlight"><pre><span></span><code>【目标科室】呼吸内科
+【所在位置】3楼东侧，靠近电梯口
+【引导路线】
+1. 从1楼大厅导诊台出发，前往大厅西侧电梯
+2. 乘坐电梯至3楼
+3. 出电梯后右转直行
+4. 呼吸内科位于东侧，靠近电梯口，紧邻护士站
+</code></pre></div></p>
+<h4 id="425">4.2.5 历史记录模块</h4>
+<p><strong>职责：</strong> 管理用户的分诊历史，支持查询与回顾。</p>
+<p><strong>核心组件：</strong><br />
+- 记录存储器：将分诊结果持久化到SQLite<br />
+- 记录查询器：按时间倒序查询历史记录<br />
+- 详情展示器：展示单条记录的完整信息</p>
+<p><strong>数据项：</strong> 时间戳、输入症状、推荐科室、置信度、是否查看路线</p>
+<h4 id="426">4.2.6 系统管理模块</h4>
+<p><strong>职责：</strong> 提供知识库维护、规则管理、系统配置等管理功能。</p>
+<p><strong>核心组件：</strong><br />
+- 知识库编辑器：增删改症状与科室数据<br />
+- 规则管理器：编辑IF-THEN规则<br />
+- 系统配置器：设置API密钥、阈值参数等<br />
+- 数据备份器：知识库与规则库的导出/导入</p>
+<hr />
+<h2 id="5">5. 技术选型</h2>
+<h3 id="51">5.1 技术选型总览</h3>
+<table>
+<thead>
+<tr>
+<th>技术领域</th>
+<th>选型方案</th>
+<th>版本要求</th>
+<th>选型理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编程语言</td>
+<td>Python</td>
+<td>3.8+</td>
+<td>AI生态完善，专家系统与深度学习库丰富</td>
+</tr>
+<tr>
+<td>GUI框架</td>
+<td>PyQt5 / Tkinter</td>
+<td>5.15+</td>
+<td>跨平台、组件丰富、学习曲线适中</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>SQLite</td>
+<td>3.35+</td>
+<td>轻量级、零配置、内置于Python标准库</td>
+</tr>
+<tr>
+<td>语音识别</td>
+<td>百度语音API / 讯飞API</td>
+<td>-</td>
+<td>准确率高、中文支持好、有免费额度</td>
+</tr>
+<tr>
+<td>分词工具</td>
+<td>jieba</td>
+<td>0.42+</td>
+<td>中文分词首选，支持自定义词典</td>
+</tr>
+<tr>
+<td>深度学习</td>
+<td>scikit-learn / PyTorch</td>
+<td>1.0+</td>
+<td>适合文本分类任务，与专家系统互补</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-gui">5.2 前端/GUI技术</h3>
+<p><strong>PyQt5</strong><br />
+- <strong>优势</strong>：组件丰富（按钮、输入框、列表、对话框等完善），支持自定义样式，文档齐全<br />
+- <strong>适用场景</strong>：桌面级GUI应用，需要复杂界面交互的场景<br />
+- <strong>核心组件</strong>：QMainWindow（主窗口）、QPushButton（按钮）、QTextEdit（文本输入）、QListWidget（列表展示）</p>
+<p><strong>备选：Tkinter</strong><br />
+- <strong>优势</strong>：Python内置库，无需额外安装，轻量级<br />
+- <strong>适用场景</strong>：简单界面、快速原型开发<br />
+- <strong>决策</strong>：课程设计演示阶段使用PyQt5，确保界面美观度</p>
+<h3 id="53">5.3 后端/算法技术</h3>
+<p><strong>专家系统引擎（自研）</strong><br />
+- <strong>知识表示</strong>：基于产生式规则（IF-THEN）<br />
+- <strong>推理机制</strong>：正向推理（数据驱动）<br />
+- <strong>冲突消解</strong>：加权投票机制，置信度优先<br />
+- <strong>实现方式</strong>：Python字典存储规则，自定义推理机类</p>
+<p><strong>症状文本分类（深度学习辅助）</strong><br />
+- <strong>模型选择</strong>：朴素贝叶斯 / SVM / 浅层神经网络<br />
+- <strong>特征提取</strong>：TF-IDF + 词袋模型<br />
+- <strong>训练数据</strong>：基于18种症状的标注语料（可扩展）<br />
+- <strong>作用</strong>：辅助专家系统，提升模糊症状识别率</p>
+<p><strong>语音识别（第三方API）</strong><br />
+- <strong>候选方案</strong>：百度语音识别API、讯飞开放平台<br />
+- <strong>调用方式</strong>：RESTful API，上传音频文件获取识别结果<br />
+- <strong>容错设计</strong>：识别失败自动切换至文字输入</p>
+<h3 id="54">5.4 数据库技术</h3>
+<p><strong>SQLite</strong><br />
+- <strong>选型理由</strong>：<br />
+  - 零配置、单文件存储，便于课程设计交付与部署<br />
+  - 内置于Python标准库（sqlite3模块），无需额外安装<br />
+  - 支持标准SQL语法，满足本项目数据管理需求<br />
+  - 性能足以支撑单用户原型系统</p>
+<ul>
+<li><strong>数据文件</strong>：<code>guide_system.db</code>（单文件，可随项目一起分发）</li>
+</ul>
+<h3 id="55-ai">5.5 AI技术栈</h3>
+<table>
+<thead>
+<tr>
+<th>AI技术</th>
+<th>具体实现</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>专家系统</td>
+<td>自研规则推理引擎</td>
+<td>核心分诊逻辑，可解释性强</td>
+</tr>
+<tr>
+<td>自然语言处理</td>
+<td>jieba分词 + 模糊匹配</td>
+<td>症状关键词提取</td>
+</tr>
+<tr>
+<td>机器学习</td>
+<td>scikit-learn文本分类</td>
+<td>辅助症状识别，提升准确率</td>
+</tr>
+<tr>
+<td>语音识别</td>
+<td>第三方ASR API</td>
+<td>语音输入转文字</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6">6. 数据库设计</h2>
+<h3 id="61-e-r">6.1 E-R图设计</h3>
+<p><img alt="数据库E-R图" src="images/fig4_er.png" /></p>
+<p><em>图4：数据库E-R图（展示实体、属性及实体间的关联关系）</em></p>
+<h3 id="62">6.2 表结构设计</h3>
+<h4 id="621-symptoms">6.2.1 症状表（symptoms）</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>symptom_id</td>
+<td>INTEGER</td>
+<td>PRIMARY KEY</td>
+<td>症状唯一标识</td>
+</tr>
+<tr>
+<td>symptom_name</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>症状名称</td>
+</tr>
+<tr>
+<td>category</td>
+<td>VARCHAR(30)</td>
+<td>NOT NULL</td>
+<td>症状分类（呼吸类/消化类/神经类等）</td>
+</tr>
+<tr>
+<td>synonyms</td>
+<td>VARCHAR(200)</td>
+<td></td>
+<td>同义词，逗号分隔</td>
+</tr>
+<tr>
+<td>base_weight</td>
+<td>FLOAT</td>
+<td>DEFAULT 1.0</td>
+<td>症状基础权重</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例数据：</strong></p>
+<table>
+<thead>
+<tr>
+<th>symptom_id</th>
+<th>symptom_name</th>
+<th>category</th>
+<th>synonyms</th>
+<th>base_weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>发烧</td>
+<td>呼吸类</td>
+<td>发热、高热、低烧</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>咳嗽</td>
+<td>呼吸类</td>
+<td>咳、干咳、咳痰</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>喉咙痛</td>
+<td>呼吸类</td>
+<td>咽痛、嗓子痛</td>
+<td>0.9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>腹痛</td>
+<td>消化类</td>
+<td>肚子疼、胃痛</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>头痛</td>
+<td>神经类</td>
+<td>头疼、偏头痛</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>关节痛</td>
+<td>骨科类</td>
+<td>关节疼、关节疼痛</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>高血压</td>
+<td>心血管类</td>
+<td>血压高</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>皮肤瘙痒</td>
+<td>皮肤类</td>
+<td>皮疹、皮肤红肿</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+<h4 id="622-departments">6.2.2 科室表（departments）</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dept_id</td>
+<td>INTEGER</td>
+<td>PRIMARY KEY</td>
+<td>科室唯一标识</td>
+</tr>
+<tr>
+<td>dept_name</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>科室名称</td>
+</tr>
+<tr>
+<td>function_desc</td>
+<td>VARCHAR(200)</td>
+<td></td>
+<td>核心职能描述</td>
+</tr>
+<tr>
+<td>floor</td>
+<td>INTEGER</td>
+<td>NOT NULL</td>
+<td>所在楼层</td>
+</tr>
+<tr>
+<td>location_desc</td>
+<td>VARCHAR(200)</td>
+<td>NOT NULL</td>
+<td>位置描述</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例数据：</strong></p>
+<table>
+<thead>
+<tr>
+<th>dept_id</th>
+<th>dept_name</th>
+<th>function_desc</th>
+<th>floor</th>
+<th>location_desc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>呼吸内科</td>
+<td>诊治发烧、咳嗽、胸闷等呼吸道疾病</td>
+<td>3</td>
+<td>3楼东侧，靠近电梯口</td>
+</tr>
+<tr>
+<td>2</td>
+<td>消化内科</td>
+<td>诊治腹痛、胃痛、腹泻等消化疾病</td>
+<td>3</td>
+<td>3楼西侧，靠近楼梯口</td>
+</tr>
+<tr>
+<td>3</td>
+<td>神经内科</td>
+<td>诊治头痛、头晕、失眠等神经疾病</td>
+<td>4</td>
+<td>4楼东侧，紧邻护士站</td>
+</tr>
+<tr>
+<td>4</td>
+<td>骨科</td>
+<td>诊治关节痛、腰痛、骨折等骨科疾病</td>
+<td>4</td>
+<td>4楼西侧，靠近康复室</td>
+</tr>
+<tr>
+<td>5</td>
+<td>心血管内科</td>
+<td>诊治高血压、心慌等心血管疾病</td>
+<td>5</td>
+<td>5楼东侧，靠近心电图室</td>
+</tr>
+<tr>
+<td>6</td>
+<td>皮肤科</td>
+<td>诊治皮肤瘙痒、皮疹等皮肤疾病</td>
+<td>5</td>
+<td>5楼西侧，靠近药房</td>
+</tr>
+<tr>
+<td>7</td>
+<td>眼科</td>
+<td>诊治视力模糊、眼干等眼部疾病</td>
+<td>6</td>
+<td>6楼东侧，靠近验光室</td>
+</tr>
+<tr>
+<td>8</td>
+<td>耳鼻喉科</td>
+<td>诊治喉咙痛、声音嘶哑等耳鼻喉疾病</td>
+<td>6</td>
+<td>6楼西侧，靠近听力检测室</td>
+</tr>
+<tr>
+<td>9</td>
+<td>急诊科</td>
+<td>处理昏迷、大出血等紧急情况</td>
+<td>1</td>
+<td>1楼大厅东侧，24小时接诊</td>
+</tr>
+<tr>
+<td>10</td>
+<td>导诊台</td>
+<td>提供人工导诊、咨询服务</td>
+<td>1</td>
+<td>1楼大厅中央，入口处附近</td>
+</tr>
+</tbody>
+</table>
+<h4 id="623-rules">6.2.3 规则表（rules）</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rule_id</td>
+<td>INTEGER</td>
+<td>PRIMARY KEY</td>
+<td>规则唯一标识</td>
+</tr>
+<tr>
+<td>symptom_id</td>
+<td>INTEGER</td>
+<td>FOREIGN KEY</td>
+<td>关联症状</td>
+</tr>
+<tr>
+<td>dept_id</td>
+<td>INTEGER</td>
+<td>FOREIGN KEY</td>
+<td>关联科室</td>
+</tr>
+<tr>
+<td>rule_weight</td>
+<td>FLOAT</td>
+<td>DEFAULT 1.0</td>
+<td>规则权重</td>
+</tr>
+<tr>
+<td>conditions</td>
+<td>VARCHAR(500)</td>
+<td></td>
+<td>规则条件描述</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例数据：</strong></p>
+<table>
+<thead>
+<tr>
+<th>rule_id</th>
+<th>symptom_id</th>
+<th>dept_id</th>
+<th>rule_weight</th>
+<th>conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1.0</td>
+<td>发烧 → 呼吸内科</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1.0</td>
+<td>咳嗽 → 呼吸内科</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>0.8</td>
+<td>喉咙痛 → 呼吸内科（单纯）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>8</td>
+<td>0.7</td>
+<td>喉咙痛+声音嘶哑 → 耳鼻喉科</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+<td>2</td>
+<td>1.0</td>
+<td>腹痛 → 消化内科</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5</td>
+<td>3</td>
+<td>1.0</td>
+<td>头痛 → 神经内科</td>
+</tr>
+<tr>
+<td>7</td>
+<td>6</td>
+<td>4</td>
+<td>1.0</td>
+<td>关节痛 → 骨科</td>
+</tr>
+<tr>
+<td>8</td>
+<td>7</td>
+<td>5</td>
+<td>1.0</td>
+<td>高血压 → 心血管内科</td>
+</tr>
+</tbody>
+</table>
+<h4 id="624-records">6.2.4 分诊记录表（records）</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>record_id</td>
+<td>INTEGER</td>
+<td>PRIMARY KEY AUTOINCREMENT</td>
+<td>记录唯一标识</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>DATETIME</td>
+<td>DEFAULT CURRENT_TIMESTAMP</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>input_text</td>
+<td>VARCHAR(500)</td>
+<td>NOT NULL</td>
+<td>用户输入原文</td>
+</tr>
+<tr>
+<td>matched_symptoms</td>
+<td>VARCHAR(200)</td>
+<td></td>
+<td>匹配到的症状列表</td>
+</tr>
+<tr>
+<td>recommended_dept</td>
+<td>INTEGER</td>
+<td>FOREIGN KEY</td>
+<td>推荐科室</td>
+</tr>
+<tr>
+<td>confidence</td>
+<td>FLOAT</td>
+<td></td>
+<td>分诊置信度</td>
+</tr>
+<tr>
+<td>viewed_route</td>
+<td>BOOLEAN</td>
+<td>DEFAULT FALSE</td>
+<td>是否查看路线</td>
+</tr>
+</tbody>
+</table>
+<h4 id="625-floors">6.2.5 楼层表（floors）</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>floor_id</td>
+<td>INTEGER</td>
+<td>PRIMARY KEY</td>
+<td>楼层唯一标识</td>
+</tr>
+<tr>
+<td>floor_number</td>
+<td>INTEGER</td>
+<td>NOT NULL</td>
+<td>楼层编号</td>
+</tr>
+<tr>
+<td>core_areas</td>
+<td>VARCHAR(200)</td>
+<td></td>
+<td>核心区域/科室</td>
+</tr>
+<tr>
+<td>elevator_stairs</td>
+<td>VARCHAR(200)</td>
+<td></td>
+<td>电梯/楼梯位置</td>
+</tr>
+<tr>
+<td>guide_text</td>
+<td>VARCHAR(500)</td>
+<td></td>
+<td>引导说明文字</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例数据：</strong></p>
+<table>
+<thead>
+<tr>
+<th>floor_id</th>
+<th>floor_number</th>
+<th>core_areas</th>
+<th>elevator_stairs</th>
+<th>guide_text</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>导诊台、急诊科、大厅</td>
+<td>电梯2部（大厅西侧），楼梯1部（大厅东侧）</td>
+<td>从入口进入后，中央为导诊台...</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>呼吸内科、消化内科</td>
+<td>电梯2部（楼层西侧），楼梯1部（楼层东侧）</td>
+<td>出电梯后，东侧为呼吸内科...</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>神经内科、骨科</td>
+<td>电梯2部（楼层西侧），楼梯1部（楼层东侧）</td>
+<td>出电梯后，东侧为神经内科...</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>心血管内科、皮肤科</td>
+<td>电梯2部（楼层西侧），楼梯1部（楼层东侧）</td>
+<td>出电梯后，东侧为心血管内科...</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>眼科、耳鼻喉科</td>
+<td>电梯2部（楼层西侧），楼梯1部（楼层东侧）</td>
+<td>出电梯后，东侧为眼科...</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7">7. 核心接口设计</h2>
+<h3 id="71">7.1 接口设计规范</h3>
+<ul>
+<li><strong>接口风格</strong>：模块内部采用Python函数调用，模块间通过标准化数据格式（字典/JSON）交互</li>
+<li><strong>错误处理</strong>：统一返回格式 <code>{"success": bool, "data": any, "message": str}</code></li>
+<li><strong>日志记录</strong>：关键接口调用记录输入参数与执行时间</li>
+</ul>
+<h3 id="72">7.2 模块间核心接口</h3>
+<h4 id="721">7.2.1 语音输入模块接口</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 语音识别接口</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">recognize_speech</span><span class="p">(</span><span class="n">audio_data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将音频数据转换为文字</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        audio_data: 音频二进制数据</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;success&quot;: True,</span>
+<span class="sd">            &quot;data&quot;: {&quot;text&quot;: &quot;我发烧咳嗽好几天了&quot;},</span>
+<span class="sd">            &quot;message&quot;: &quot;识别成功&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="c1"># 文字输入接口</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">input_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    接收用户文字输入</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text: 用户输入的症状描述</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;success&quot;: True,</span>
+<span class="sd">            &quot;data&quot;: {&quot;text&quot;: &quot;我发烧咳嗽好几天了&quot;},</span>
+<span class="sd">            &quot;message&quot;: &quot;输入成功&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="722">7.2.2 症状提取模块接口</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_symptoms</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    从文本中提取症状关键词</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text: 用户输入的自然语言文本</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;success&quot;: True,</span>
+<span class="sd">            &quot;data&quot;: {</span>
+<span class="sd">                &quot;symptoms&quot;: [</span>
+<span class="sd">                    {&quot;name&quot;: &quot;发烧&quot;, &quot;type&quot;: &quot;core&quot;, &quot;confidence&quot;: 1.0},</span>
+<span class="sd">                    {&quot;name&quot;: &quot;咳嗽&quot;, &quot;type&quot;: &quot;core&quot;, &quot;confidence&quot;: 1.0}</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;need_clarify&quot;: False,</span>
+<span class="sd">                &quot;clarify_question&quot;: &quot;&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;message&quot;: &quot;提取成功&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="723">7.2.3 智能分诊模块接口</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">diagnose</span><span class="p">(</span><span class="n">symptoms</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    基于症状列表进行智能分诊</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        symptoms: 症状列表，格式为 [{&quot;name&quot;: str, &quot;confidence&quot;: float}]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;success&quot;: True,</span>
+<span class="sd">            &quot;data&quot;: {</span>
+<span class="sd">                &quot;primary&quot;: {</span>
+<span class="sd">                    &quot;dept_id&quot;: 1,</span>
+<span class="sd">                    &quot;dept_name&quot;: &quot;呼吸内科&quot;,</span>
+<span class="sd">                    &quot;confidence&quot;: 0.95,</span>
+<span class="sd">                    &quot;reason&quot;: &quot;根据您描述的发烧、咳嗽症状，优先推荐呼吸内科&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;alternatives&quot;: [</span>
+<span class="sd">                    {&quot;dept_id&quot;: 8, &quot;dept_name&quot;: &quot;耳鼻喉科&quot;, &quot;confidence&quot;: 0.3}</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;matched_rules&quot;: [1, 2]</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;message&quot;: &quot;分诊完成&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="724">7.2.4 楼层引导模块接口</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_route</span><span class="p">(</span><span class="n">dept_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    生成到目标科室的导航路线</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dept_id: 目标科室ID</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;success&quot;: True,</span>
+<span class="sd">            &quot;data&quot;: {</span>
+<span class="sd">                &quot;dept_name&quot;: &quot;呼吸内科&quot;,</span>
+<span class="sd">                &quot;floor&quot;: 3,</span>
+<span class="sd">                &quot;location&quot;: &quot;3楼东侧，靠近电梯口&quot;,</span>
+<span class="sd">                &quot;route&quot;: [</span>
+<span class="sd">                    &quot;从1楼大厅导诊台出发，前往大厅西侧电梯&quot;,</span>
+<span class="sd">                    &quot;乘坐电梯至3楼&quot;,</span>
+<span class="sd">                    &quot;出电梯后右转直行&quot;,</span>
+<span class="sd">                    &quot;呼吸内科位于东侧，靠近电梯口&quot;</span>
+<span class="sd">                ]</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;message&quot;: &quot;路线生成成功&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="725">7.2.5 历史记录模块接口</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_record</span><span class="p">(</span><span class="n">input_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symptoms</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;保存分诊记录&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_records</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;查询历史记录，默认返回最近10条&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_record_detail</span><span class="p">(</span><span class="n">record_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;获取单条记录详情&quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="73-api">7.3 外部API接口</h3>
+<h4 id="731-api">7.3.1 语音识别API</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 百度语音识别API调用示例</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_baidu_asr</span><span class="p">(</span><span class="n">audio_data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    调用百度语音识别API</span>
+
+<span class="sd">    Request:</span>
+<span class="sd">        POST https://vop.baidu.com/server_api</span>
+<span class="sd">        Content-Type: audio/pcm;rate=16000</span>
+
+<span class="sd">    Response:</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;err_no&quot;: 0,</span>
+<span class="sd">            &quot;err_msg&quot;: &quot;success&quot;,</span>
+<span class="sd">            &quot;result&quot;: [&quot;我发烧咳嗽好几天了&quot;]</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="8">8. 部署架构</h2>
+<h3 id="81">8.1 运行环境要求</h3>
+<table>
+<thead>
+<tr>
+<th>环境项</th>
+<th>最低配置</th>
+<th>推荐配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统</td>
+<td>Windows 10</td>
+<td>Windows 11 / macOS / Linux</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>Intel i3 / AMD Ryzen 3</td>
+<td>Intel i5 / AMD Ryzen 5</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>4GB</td>
+<td>8GB</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>1GB可用空间</td>
+<td>2GB可用空间</td>
+</tr>
+<tr>
+<td>麦克风</td>
+<td>普通麦克风</td>
+<td>降噪麦克风</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>可选（仅语音识别需联网）</td>
+<td>宽带网络</td>
+</tr>
+<tr>
+<td>屏幕分辨率</td>
+<td>1366×768</td>
+<td>1920×1080</td>
+</tr>
+</tbody>
+</table>
+<h3 id="82">8.2 部署方式</h3>
+<p><strong>单机部署（课程设计演示方案）：</strong></p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────┐
+│           用户PC / 自助机            │
+│  ┌───────────────────────────────┐  │
+│  │      智能导医系统应用程序       │  │
+│  │  ┌─────────┐    ┌──────────┐  │  │
+│  │  │ GUI界面  │    │ 算法引擎  │  │  │
+│  │  │ (PyQt5) │    │(Python)  │  │  │
+│  │  └────┬────┘    └────┬─────┘  │  │
+│  │       └──────────────┘        │  │
+│  │              │                │  │
+│  │       ┌──────┴──────┐         │  │
+│  │       │ SQLite数据库 │         │  │
+│  │       │ guide_system │         │  │
+│  │       │    .db      │         │  │
+│  │       └─────────────┘         │  │
+│  └───────────────────────────────┘  │
+│              │                       │
+│       ┌──────┴──────┐               │
+│       │  麦克风输入  │               │
+│       └─────────────┘               │
+└─────────────────────────────────────┘
+              │
+       ┌──────┴──────┐
+       │ 语音识别API │  (可选，需联网)
+       │ (百度/讯飞) │
+       └─────────────┘
+</code></pre></div>
+<p><strong>部署步骤：</strong></p>
+<ol>
+<li>
+<p><strong>环境准备</strong><br />
+   <div class="highlight"><pre><span></span><code><span class="c1"># 安装Python 3.8+</span>
+python<span class="w"> </span>--version
+
+<span class="c1"># 创建虚拟环境</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate<span class="w">  </span><span class="c1"># Linux/macOS</span>
+venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate<span class="w">     </span><span class="c1"># Windows</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>依赖安装</strong><br />
+   <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div></p>
+</li>
+</ol>
+<p><code>requirements.txt</code> 内容：<br />
+   <div class="highlight"><pre><span></span><code>PyQt5==5.15.10
+jieba==0.42.1
+scikit-learn==1.3.0
+requests==2.31.0
+sqlite3  # 内置模块
+</code></pre></div></p>
+<ol>
+<li>
+<p><strong>数据库初始化</strong><br />
+   <div class="highlight"><pre><span></span><code>python<span class="w"> </span>init_db.py
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>配置文件设置</strong><br />
+   <div class="highlight"><pre><span></span><code><span class="c1"># 编辑 config.ini</span>
+<span class="o">[</span>API<span class="o">]</span>
+<span class="nv">baidu_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>your_app_id
+<span class="nv">baidu_api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>your_api_key
+<span class="nv">baidu_secret_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>your_secret_key
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>启动系统</strong><br />
+   <div class="highlight"><pre><span></span><code>python<span class="w"> </span>main.py
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="83">8.3 文件目录结构</h3>
+<div class="highlight"><pre><span></span><code>guide_system/
+├── main.py                  # 程序入口
+├── config.ini              # 配置文件
+├── requirements.txt        # 依赖清单
+├── init_db.py             # 数据库初始化脚本
+├── guide_system.db        # SQLite数据库文件
+│
+├── core/                   # 核心算法层
+│   ├── __init__.py
+│   ├── expert_system.py   # 专家系统推理机
+│   ├── symptom_extractor.py # 症状提取引擎
+│   ├── classifier.py      # 深度学习分类器
+│   └── speech_recognition.py # 语音识别代理
+│
+├── gui/                    # 交互展示层
+│   ├── __init__.py
+│   ├── main_window.py     # 主窗口
+│   ├── input_panel.py     # 输入面板
+│   ├── result_panel.py    # 结果展示面板
+│   └── history_panel.py   # 历史记录面板
+│
+├── models/                 # 数据模型层
+│   ├── __init__.py
+│   ├── database.py        # 数据库操作封装
+│   ├── symptom.py         # 症状数据模型
+│   ├── department.py      # 科室数据模型
+│   └── record.py          # 记录数据模型
+│
+├── data/                   # 数据文件
+│   ├── symptoms.json      # 症状知识库
+│   ├── rules.json         # 分诊规则库
+│   └── departments.json   # 科室数据
+│
+└── utils/                  # 工具模块
+    ├── __init__.py
+    ├── logger.py          # 日志工具
+    └── helpers.py         # 通用辅助函数
+</code></pre></div>
+<hr />
+<h2 id="9">9. 风险与扩展性</h2>
+<h3 id="91">9.1 风险分析与应对</h3>
+<table>
+<thead>
+<tr>
+<th>潜在风险</th>
+<th>影响程度</th>
+<th>应对措施</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语音识别准确率低</td>
+<td>中</td>
+<td>1. 使用成熟大厂API，避免自研；2. 提供文字输入作为备用方案；3. 优化提示语，引导用户清晰描述症状</td>
+</tr>
+<tr>
+<td>专家系统规则覆盖不足</td>
+<td>中</td>
+<td>1. 基于提供的18种核心症状构建完整规则；2. 设计兜底规则，未匹配时引导人工导诊；3. 预留规则扩展接口</td>
+</tr>
+<tr>
+<td>多症状分诊冲突</td>
+<td>低</td>
+<td>1. 实现加权投票机制；2. 设计冲突消解策略；3. 冲突时给出备选建议而非单一结果</td>
+</tr>
+<tr>
+<td>模块集成困难</td>
+<td>中</td>
+<td>1. 提前定义清晰的模块接口；2. 各模块输出标准化数据格式；3. 每周进行一次小型集成验证</td>
+</tr>
+<tr>
+<td>开发进度滞后</td>
+<td>高</td>
+<td>1. 制定详细周计划，每日站会同步进度；2. 识别关键路径，优先保障核心功能；3. 预留1周缓冲时间</td>
+</tr>
+<tr>
+<td>演示时出现BUG</td>
+<td>中</td>
+<td>1. 提前进行多轮演示彩排；2. 准备备用演示环境与录屏；3. 设计异常情况下的应对话术</td>
+</tr>
+</tbody>
+</table>
+<h3 id="92">9.2 系统扩展性设计</h3>
+<p><strong>水平扩展方向：</strong></p>
+<ol>
+<li><strong>症状库扩展</strong></li>
+<li>当前支持18种核心症状，可通过知识库编辑器扩展至50+种</li>
+<li>
+<p>规则库支持动态加载，新增症状只需添加对应规则</p>
+</li>
+<li>
+<p><strong>科室扩展</strong></p>
+</li>
+<li>科室数据独立存储，可灵活增删科室信息</li>
+<li>
+<p>楼层数据与科室解耦，支持医院楼层布局变更</p>
+</li>
+<li>
+<p><strong>AI模型升级</strong></p>
+</li>
+<li>深度学习模块与专家系统解耦，可独立升级模型</li>
+<li>
+<p>支持模型热切换，便于对比不同算法效果</p>
+</li>
+<li>
+<p><strong>接口扩展</strong></p>
+</li>
+<li>语音识别API可切换不同供应商</li>
+<li>预留HIS系统对接接口，未来可实现挂号一体化</li>
+</ol>
+<p><strong>长期演进路线：</strong></p>
+<div class="highlight"><pre><span></span><code>V1.0（当前） → V2.0 → V3.0
+     │           │        │
+     ▼           ▼        ▼
+  18种症状   50+种症状  多轮对话
+  10个科室   全科室覆盖  个性化推荐
+  单机运行   网络部署   云端服务
+  文字导航   室内地图   AR实景导航
+</code></pre></div>
+<h3 id="93">9.3 可维护性保障</h3>
+<ul>
+<li><strong>代码规范</strong>：遵循PEP 8编码规范，关键函数配备docstring</li>
+<li><strong>日志系统</strong>：分级日志记录（DEBUG/INFO/WARNING/ERROR），便于问题排查</li>
+<li><strong>单元测试</strong>：核心推理算法配备单元测试用例</li>
+<li><strong>文档完善</strong>：模块接口文档、数据库设计文档、部署手册齐全</li>
+</ul>
+<hr />
+<p><strong>附录：团队分工</strong></p>
+<table>
+<thead>
+<tr>
+<th>岗位</th>
+<th>负责人</th>
+<th>核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目组长</td>
+<td>梁耀辉</td>
+<td>统筹项目进度、协调各模块接口、组织团队讨论</td>
+</tr>
+<tr>
+<td>需求与架构组</td>
+<td>许欢、王志强、张若岩</td>
+<td>需求调研、PRD撰写、系统架构设计</td>
+</tr>
+<tr>
+<td>专家系统组</td>
+<td>邱良梓</td>
+<td>医疗知识库构建、规则库编写、推理机实现</td>
+</tr>
+<tr>
+<td>深度学习/算法组</td>
+<td>梁耀辉</td>
+<td>语音识别集成、症状提取算法、文本分类实现</td>
+</tr>
+<tr>
+<td>界面与交互组</td>
+<td>马一鹏、张治文</td>
+<td>GUI界面开发、交互逻辑实现</td>
+</tr>
+<tr>
+<td>测试与文档组</td>
+<td>朱益暄</td>
+<td>测试用例设计、功能测试、文档撰写</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>本文档为智能导医系统课程设计架构设计文档，基于符号主义专家系统与深度学习混合架构，旨在完成可演示的原型系统。</em></p>
+</body>
+</html>

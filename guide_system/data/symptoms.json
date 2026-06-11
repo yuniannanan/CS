@@ -1,0 +1,107 @@
+[
+  {
+    "symptom_id": 1,
+    "symptom_name": "头痛",
+    "category": "neurological",
+    "synonyms": "头疼,头部疼痛,脑部不适",
+    "base_weight": 1.0
+  },
+  {
+    "symptom_id": 2,
+    "symptom_name": "发热",
+    "category": "systemic",
+    "synonyms": "发烧,体温升高,高热",
+    "base_weight": 1.2
+  },
+  {
+    "symptom_id": 3,
+    "symptom_name": "咳嗽",
+    "category": "respiratory",
+    "synonyms": "咳,咳嗽不止,干咳",
+    "base_weight": 1.0
+  },
+  {
+    "symptom_id": 4,
+    "symptom_name": "咽痛",
+    "category": "respiratory",
+    "synonyms": "喉咙痛,咽喉疼痛,嗓子疼",
+    "base_weight": 0.9
+  },
+  {
+    "symptom_id": 5,
+    "symptom_name": "胸闷",
+    "category": "cardiovascular",
+    "synonyms": "胸部闷痛,胸口不适,呼吸困难",
+    "base_weight": 1.3
+  },
+  {
+    "symptom_id": 6,
+    "symptom_name": "腹痛",
+    "category": "gastrointestinal",
+    "synonyms": "肚子疼,腹部疼痛,肠胃不适",
+    "base_weight": 1.0
+  },
+  {
+    "symptom_id": 7,
+    "symptom_name": "恶心",
+    "category": "gastrointestinal",
+    "synonyms": "想吐,反胃,呕吐感",
+    "base_weight": 0.8
+  },
+  {
+    "symptom_id": 8,
+    "symptom_name": "腹泻",
+    "category": "gastrointestinal",
+    "synonyms": "拉肚子,腹痛腹泻,稀便",
+    "base_weight": 1.0
+  },
+  {
+    "symptom_id": 9,
+    "symptom_name": "关节疼痛",
+    "category": "musculoskeletal",
+    "synonyms": "关节疼,关节肿痛,关节炎",
+    "base_weight": 1.0
+  },
+  {
+    "symptom_id": 10,
+    "symptom_name": "皮疹",
+    "category": "dermatological",
+    "synonyms": "皮肤红疹,皮肤瘙痒,皮炎",
+    "base_weight": 0.9
+  },
+  {
+    "symptom_id": 11,
+    "symptom_name": "头晕",
+    "category": "neurological",
+    "synonyms": "眩晕,头昏,平衡失调",
+    "base_weight": 1.1
+  },
+  {
+    "symptom_id": 12,
+    "symptom_name": "心悸",
+    "category": "cardiovascular",
+    "synonyms": "心跳加快,心慌,心律不齐",
+    "base_weight": 1.2
+  },
+  {
+    "symptom_id": 13,
+    "symptom_name": "乏力",
+    "category": "systemic",
+    "synonyms": "疲劳,疲倦,无力",
+    "base_weight": 0.7
+  },
+  {
+    "symptom_id": 14,
+    "symptom_name": "食欲不振",
+    "category": "gastrointestinal",
+    "synonyms": "厌食,胃口差,消化不良",
+    "base_weight": 0.8
+  },
+  {
+    "symptom_id": 15,
+    "symptom_name": "体重下降",
+    "category": "systemic",
+    "synonyms": "消瘦,体重减轻,莫名消瘦",
+    "base_weight": 1.1
+  }
+]

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+<defs>
+<filter id="sh"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-opacity="0.08"/></filter>
+<linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1890FF"/><stop offset="100%" stop-color="#096DD9"/></linearGradient>
+<marker id="arr_595959" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#595959"/></marker>
+<marker id="arr_52C41A" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#52C41A"/></marker>
+<marker id="arr_FF4D4F" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#FF4D4F"/></marker>
+<marker id="arr_1890FF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1890FF"/></marker>
+</defs>
+<rect x="0" y="0" width="1000" height="750" fill="#FAFBFC"/>
+
+<!-- 标题栏 -->
+<rect x="0" y="0" width="1000" height="50" fill="url(#hdr)"/>
+<text x="500" y="22" text-anchor="middle" font-size="18" fill="white" font-weight="bold">智能导医系统 — 核心操作流程</text>
+<text x="500" y="40" text-anchor="middle" font-size="11" fill="white" opacity="0.8">Core Operation Flow</text>
+<rect x="75" y="58" width="110" height="22" rx="11" fill="#F0F5FF" stroke="#BAE7FF"/>
+<text x="130" y="73" text-anchor="middle" font-size="10" fill="#1890FF" font-weight="bold">输入阶段</text>
+<rect x="295" y="58" width="110" height="22" rx="11" fill="#F0F5FF" stroke="#BAE7FF"/>
+<text x="350" y="73" text-anchor="middle" font-size="10" fill="#1890FF" font-weight="bold">识别阶段</text>
+<rect x="515" y="58" width="110" height="22" rx="11" fill="#F0F5FF" stroke="#BAE7FF"/>
+<text x="570" y="73" text-anchor="middle" font-size="10" fill="#1890FF" font-weight="bold">推理阶段</text>
+<rect x="735" y="58" width="110" height="22" rx="11" fill="#F0F5FF" stroke="#BAE7FF"/>
+<text x="790" y="73" text-anchor="middle" font-size="10" fill="#1890FF" font-weight="bold">输出阶段</text>
+<rect x="65" y="89" width="130" height="42" rx="9" fill="#1890FF" stroke="#096DD9" stroke-width="1.8" filter="url(#sh)"/>
+<text x="130" y="106" text-anchor="middle" font-size="12.5" fill="#FFFFFF" font-weight="bold">患者到达门诊</text>
+<line x1="130" y1="132" x2="130" y2="170" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<rect x="65" y="169" width="130" height="42" rx="9" fill="#E6F7FF" stroke="#1890FF" stroke-width="1.8" filter="url(#sh)"/>
+<text x="130" y="186" text-anchor="middle" font-size="12.5" fill="#1D39C4" font-weight="bold">选择输入方式</text>
+<line x1="130" y1="212" x2="130" y2="250" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<rect x="15" y="245" width="110" height="50" rx="8" fill="#F6FFED" stroke="#52C41A" stroke-width="1.8" filter="url(#sh)"/>
+<text x="70" y="266" text-anchor="middle" font-size="12.5" fill="#389E0D" font-weight="bold">🎤 语音输入</text>
+<text x="70" y="283" text-anchor="middle" font-size="9" fill="#389E0D" opacity="0.75">长按说话 · 松手识别</text>
+<rect x="135" y="245" width="110" height="50" rx="8" fill="#F6FFED" stroke="#52C41A" stroke-width="1.8" filter="url(#sh)"/>
+<text x="190" y="266" text-anchor="middle" font-size="12.5" fill="#389E0D" font-weight="bold">✏️ 文字输入</text>
+<text x="190" y="283" text-anchor="middle" font-size="9" fill="#389E0D" opacity="0.75">键盘输入症状</text>
+<rect x="65" y="320" width="130" height="40" rx="8" fill="#F6FFED" stroke="#52C41A" stroke-width="1.8" filter="url(#sh)"/>
+<text x="130" y="336" text-anchor="middle" font-size="12.5" fill="#389E0D" font-weight="bold">快捷症状按钮</text>
+<text x="130" y="353" text-anchor="middle" font-size="9" fill="#389E0D" opacity="0.75">点击常见症状标签</text>
+<line x1="130" y1="230" x2="70" y2="270" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="130" y1="230" x2="190" y2="270" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="130" y1="212" x2="130" y2="340" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="70" y1="295" x2="35" y2="295" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="225" y1="295" x2="310" y2="295" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="35" y1="295" x2="35" y2="395" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="130" y1="360" x2="130" y2="395" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="35" y1="395" x2="310" y2="395" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="310" y1="395" x2="310" y2="420" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<rect x="235" y="416" width="150" height="48" rx="9" fill="#E6F7FF" stroke="#1890FF" stroke-width="1.8" filter="url(#sh)"/>
+<text x="310" y="436" text-anchor="middle" font-size="12.5" fill="#1D39C4" font-weight="bold">AI 症状提取</text>
+<text x="310" y="453" text-anchor="middle" font-size="9" fill="#1D39C4" opacity="0.75">jieba分词 · 同义词匹配</text>
+<line x1="310" y1="464" x2="310" y2="505" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<polygon points="310,498 360,525 310,553 260,525" fill="#FFF7E6" stroke="#FAAD14" stroke-width="1.8" filter="url(#sh)"/>
+<text x="310" y="530" text-anchor="middle" font-size="11" fill="#D48806" font-weight="bold">提取成功?</text>
+<line x1="310" y1="553" x2="310" y2="600" stroke="#FF4D4F" stroke-width="1.8" marker-end="url(#arr_FF4D4F)"/>
+<text x="322" y="572" font-size="9" fill="#FF4D4F" font-weight="600">否</text>
+<rect x="245" y="599" width="130" height="42" rx="9" fill="#FFF1F0" stroke="#FF4D4F" stroke-width="1.8" filter="url(#sh)"/>
+<text x="310" y="616" text-anchor="middle" font-size="12.5" fill="#CF1322" font-weight="bold">提示重新描述</text>
+<text x="310" y="633" text-anchor="middle" font-size="9" fill="#CF1322" opacity="0.75">引导补充症状细节</text>
+<line x1="310" y1="641" x2="310" y2="670" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="310" y1="670" x2="310" y2="690" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="310" y1="690" x2="130" y2="690" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<line x1="130" y1="690" x2="130" y2="360" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<text x="220" y="705" text-anchor="middle" font-size="9" fill="#FF4D4F" font-weight="600">↩ 重新描述症状</text>
+<line x1="400" y1="525" x2="465" y2="525" stroke="#52C41A" stroke-width="1.8" marker-end="url(#arr_52C41A)"/>
+<text x="444" y="521" font-size="9" fill="#52C41A" font-weight="600">是</text>
+<rect x="390" y="478" width="160" height="48" rx="9" fill="#E6F7FF" stroke="#1890FF" stroke-width="1.8" filter="url(#sh)"/>
+<text x="470" y="498" text-anchor="middle" font-size="12.5" fill="#1D39C4" font-weight="bold">专家系统推理</text>
+<text x="470" y="515" text-anchor="middle" font-size="9" fill="#1D39C4" opacity="0.75">51条规则 · 组合推理</text>
+<line x1="550" y1="527" x2="550" y2="570" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<polygon points="550,560 600,585 550,610 500,585" fill="#FFF7E6" stroke="#FAAD14" stroke-width="1.8" filter="url(#sh)"/>
+<text x="550" y="590" text-anchor="middle" font-size="11" fill="#D48806" font-weight="bold">匹配到规则?</text>
+<line x1="550" y1="610" x2="550" y2="650" stroke="#FF4D4F" stroke-width="1.8" marker-end="url(#arr_FF4D4F)"/>
+<text x="562" y="626" font-size="9" fill="#FF4D4F" font-weight="600">否</text>
+<rect x="485" y="649" width="130" height="42" rx="9" fill="#FFF1F0" stroke="#FF4D4F" stroke-width="1.8" filter="url(#sh)"/>
+<text x="550" y="666" text-anchor="middle" font-size="12.5" fill="#CF1322" font-weight="bold">引导人工导诊</text>
+<text x="550" y="683" text-anchor="middle" font-size="9" fill="#CF1322" opacity="0.75">无匹配规则时兜底</text>
+<line x1="640" y1="585" x2="695" y2="585" stroke="#52C41A" stroke-width="1.8" marker-end="url(#arr_52C41A)"/>
+<text x="679" y="581" font-size="9" fill="#52C41A" font-weight="600">是</text>
+<rect x="625" y="538" width="150" height="48" rx="9" fill="#E6F7FF" stroke="#1890FF" stroke-width="1.8" filter="url(#sh)"/>
+<text x="700" y="558" text-anchor="middle" font-size="12.5" fill="#1D39C4" font-weight="bold">生成分诊结果</text>
+<text x="700" y="575" text-anchor="middle" font-size="9" fill="#1D39C4" opacity="0.75">推荐科室 · 置信度</text>
+<rect x="695" y="560" width="55" height="18" rx="9" fill="#FFF7E6" stroke="#FFD591"/>
+<text x="722" y="573" text-anchor="middle" font-size="9" fill="#D48806" font-weight="bold">🟠 紧急</text>
+<line x1="775" y1="590" x2="775" y2="630" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<rect x="625" y="626" width="150" height="48" rx="9" fill="#F6FFED" stroke="#52C41A" stroke-width="1.8" filter="url(#sh)"/>
+<text x="700" y="646" text-anchor="middle" font-size="12.5" fill="#389E0D" font-weight="bold">查看就诊路线</text>
+<text x="700" y="663" text-anchor="middle" font-size="9" fill="#389E0D" opacity="0.75">楼层地图 · 路径指引</text>
+<line x1="775" y1="674" x2="775" y2="710" stroke="#595959" stroke-width="1.8" marker-end="url(#arr_595959)"/>
+<rect x="625" y="689" width="150" height="42" rx="9" fill="#1890FF" stroke="#096DD9" stroke-width="1.8" filter="url(#sh)"/>
+<text x="700" y="706" text-anchor="middle" font-size="12.5" fill="#FFFFFF" font-weight="bold">完成就诊</text>
+<rect x="885" y="100" width="100" height="260" rx="8" fill="white" stroke="#E8E8E8" filter="url(#sh)"/>
+<text x="935" y="122" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">图例</text>
+<rect x="895" y="140" width="28" height="22" rx="4" fill="#1890FF" stroke="#096DD9" stroke-width="1.2"/>
+<text x="931" y="156" font-size="10" fill="#555">开始/结束</text>
+<rect x="895" y="182" width="28" height="22" rx="4" fill="#E6F7FF" stroke="#1890FF" stroke-width="1.2"/>
+<text x="931" y="198" font-size="10" fill="#555">处理步骤</text>
+<rect x="895" y="224" width="28" height="22" rx="4" fill="#FFF7E6" stroke="#FAAD14" stroke-width="1.2"/>
+<text x="931" y="240" font-size="10" fill="#555">决策判断</text>
+<rect x="895" y="266" width="28" height="22" rx="4" fill="#F6FFED" stroke="#52C41A" stroke-width="1.2"/>
+<text x="931" y="282" font-size="10" fill="#555">子功能</text>
+<rect x="895" y="308" width="28" height="22" rx="4" fill="#FFF1F0" stroke="#FF4D4F" stroke-width="1.2"/>
+<text x="931" y="324" font-size="10" fill="#555">异常处理</text>
+<rect x="885" y="380" width="100" height="180" rx="8" fill="#F0F5FF" stroke="#BAE7FF"/>
+<text x="935" y="402" text-anchor="middle" font-size="10" fill="#1890FF" font-weight="bold">系统现状</text>
+<text x="935" y="422" text-anchor="middle" font-size="9" fill="#666">✓ 15个症状</text>
+<text x="935" y="444" text-anchor="middle" font-size="9" fill="#666">✓ 8个科室</text>
+<text x="935" y="466" text-anchor="middle" font-size="9" fill="#666">✓ 51条规则</text>
+<text x="935" y="488" text-anchor="middle" font-size="9" fill="#666">✓ 4级严重度</text>
+<text x="935" y="510" text-anchor="middle" font-size="9" fill="#666">✓ 0.5秒语音</text>
+<text x="935" y="532" text-anchor="middle" font-size="9" fill="#666">✓ 5层医院模型</text>
+<text x="500" y="740" text-anchor="middle" font-size="10" fill="#BFBFBF">图: 智能导医系统核心操作流程图 — 从患者到达到完成就诊的端到端流程</text>
+</svg>

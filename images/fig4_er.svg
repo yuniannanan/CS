@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+<defs>
+<marker id="erarr" markerWidth="10" markerHeight="8" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker>
+<style>text{font-family:"Microsoft YaHei","SimHei",sans-serif;}</style>
+</defs>
+<rect width="1200" height="900" fill="#F5F5F5"/>
+<text x="600" y="38" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">智能导医系统 — 数据库E-R图</text>
+<rect x="80" y="130" width="230" height="160" fill="white" rx="4" stroke="#333" stroke-width="2"/>
+<rect x="80" y="130" width="230" height="40" fill="#1890FF" rx="4"/>
+<rect x="80" y="130+36" width="230" height="4" fill="#1890FF"/>
+<text x="195" y="150" font-size="12" font-weight="bold" text-anchor="middle" fill="white">SYMPTOM</text>
+<text x="195" y="166" font-size="12" font-weight="bold" text-anchor="middle" fill="white">症状表</text>
+<text x="92" y="176" font-size="10" fill="#C41D1F">🔑 symptom_id  PK</text>
+<text x="92" y="198" font-size="10" fill="#333">   symptom_name</text>
+<text x="92" y="220" font-size="10" fill="#333">   category</text>
+<text x="92" y="242" font-size="10" fill="#333">   synonyms</text>
+<text x="92" y="264" font-size="10" fill="#333">   base_weight</text>
+<rect x="420" y="130" width="250" height="160" fill="white" rx="4" stroke="#333" stroke-width="2"/>
+<rect x="420" y="130" width="250" height="40" fill="#52C41A" rx="4"/>
+<rect x="420" y="130+36" width="250" height="4" fill="#52C41A"/>
+<text x="545" y="150" font-size="12" font-weight="bold" text-anchor="middle" fill="white">DEPARTMENT</text>
+<text x="545" y="166" font-size="12" font-weight="bold" text-anchor="middle" fill="white">科室表</text>
+<text x="432" y="176" font-size="10" fill="#C41D1F">🔑 dept_id  PK</text>
+<text x="432" y="198" font-size="10" fill="#333">   dept_name</text>
+<text x="432" y="220" font-size="10" fill="#333">   function_desc</text>
+<text x="432" y="242" font-size="10" fill="#333">   floor</text>
+<text x="432" y="264" font-size="10" fill="#333">   location_desc</text>
+<rect x="80" y="450" width="250" height="160" fill="white" rx="4" stroke="#333" stroke-width="2"/>
+<rect x="80" y="450" width="250" height="40" fill="#FA8C16" rx="4"/>
+<rect x="80" y="450+36" width="250" height="4" fill="#FA8C16"/>
+<text x="205" y="470" font-size="12" font-weight="bold" text-anchor="middle" fill="white">RULE</text>
+<text x="205" y="486" font-size="12" font-weight="bold" text-anchor="middle" fill="white">规则表</text>
+<text x="92" y="496" font-size="10" fill="#C41D1F">🔑 rule_id  PK</text>
+<text x="92" y="518" font-size="10" fill="#FA8C16">🔗 symptom_id  FK</text>
+<text x="92" y="540" font-size="10" fill="#FA8C16">🔗 dept_id  FK</text>
+<text x="92" y="562" font-size="10" fill="#333">   rule_weight</text>
+<text x="92" y="584" font-size="10" fill="#333">   conditions</text>
+<rect x="440" y="450" width="280" height="160" fill="white" rx="4" stroke="#333" stroke-width="2"/>
+<rect x="440" y="450" width="280" height="40" fill="#EB2F96" rx="4"/>
+<rect x="440" y="450+36" width="280" height="4" fill="#EB2F96"/>
+<text x="580" y="470" font-size="12" font-weight="bold" text-anchor="middle" fill="white">RECORD</text>
+<text x="580" y="486" font-size="12" font-weight="bold" text-anchor="middle" fill="white">分诊记录表</text>
+<text x="452" y="496" font-size="10" fill="#C41D1F">🔑 record_id  PK</text>
+<text x="452" y="518" font-size="10" fill="#333">   create_time</text>
+<text x="452" y="540" font-size="10" fill="#333">   input_text</text>
+<text x="452" y="562" font-size="10" fill="#FA8C16">🔗 recommended_dept  FK</text>
+<text x="452" y="584" font-size="10" fill="#333">   confidence</text>
+<rect x="780" y="280" width="260" height="160" fill="white" rx="4" stroke="#333" stroke-width="2"/>
+<rect x="780" y="280" width="260" height="40" fill="#722ED1" rx="4"/>
+<rect x="780" y="280+36" width="260" height="4" fill="#722ED1"/>
+<text x="910" y="300" font-size="12" font-weight="bold" text-anchor="middle" fill="white">FLOOR</text>
+<text x="910" y="316" font-size="12" font-weight="bold" text-anchor="middle" fill="white">楼层表</text>
+<text x="792" y="326" font-size="10" fill="#C41D1F">🔑 floor_id  PK</text>
+<text x="792" y="348" font-size="10" fill="#333">   floor_number</text>
+<text x="792" y="370" font-size="10" fill="#333">   core_areas</text>
+<text x="792" y="392" font-size="10" fill="#333">   elevator_stairs</text>
+<text x="792" y="414" font-size="10" fill="#333">   guide_text</text>
+<line x1="195" y1="240" x2="205" y2="80" stroke="#333" stroke-width="2" marker-end="url(#erarr)"/>
+<text x="200" y="152" font-size="10" text-anchor="middle" fill="#333">1 : N</text>
+<text x="200" y="166" font-size="10" text-anchor="middle" fill="#333">SYMPTOM 拥有 RULE</text>
+<line x1="545" y1="580" x2="330" y2="80" stroke="#333" stroke-width="2" marker-end="url(#erarr)"/>
+<line x1="205" y1="240" x2="440" y2="500" stroke="#333" stroke-width="2" marker-end="url(#erarr)"/>
+<line x1="670" y1="500" x2="780" y2="860" stroke="#333" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#erarr)"/>
+<text x="725" y="672" font-size="10" text-anchor="middle" fill="#666">1 : 1</text>
+<text x="725" y="686" font-size="10" text-anchor="middle" fill="#666">位于</text>
+<rect x="780" y="730" width="380" height="140" fill="white" rx="8" stroke="#ccc" stroke-width="1"/>
+<text x="800" y="755" font-size="13" font-weight="bold" fill="#333">关系说明：</text>
+<text x="800" y="780" font-size="11" fill="#333">🔑 PK 主键    🔗 FK 外键</text>
+<text x="800" y="805" font-size="11" fill="#333">SYMPTOM (1) ── (N) RULE</text>
+<text x="800" y = "830" font-size="11" fill="#333">DEPARTMENT (1) ── (N) RULE</text>
+<text x="800" y = "855" font-size="11" fill="#333">DEPARTMENT (1) ── (1) FLOOR</text>
+<text x="600" y="882" font-size="12" text-anchor="middle" fill="#888">图4：数据库E-R图（展示实体、属性及实体间的关联关系）</text>
+</svg>

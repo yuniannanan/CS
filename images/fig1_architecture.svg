@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1250" viewBox="0 0 1000 1250">
+<defs>
+<marker id="ab" markerWidth="10" markerHeight="8" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1890FF"/></marker>
+<style>text{font-family:"Microsoft YaHei","SimHei",sans-serif;}</style>
+</defs>
+<rect width="1000" height="1250" fill="#F5F5F5"/>
+<text x="500" y="38" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">智能导医系统 — 四层架构图</text>
+<rect x="60" y="65" width="880" height="210" fill="#E8F4FD" rx="12" stroke="#999" stroke-width="1.5"/>
+<rect x="66" y="71" width="30" height="198" fill="#E8F4FD" rx="6" stroke="#aaa" stroke-width="0.8"/>
+<text x="81" y="89" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">交</text>
+<text x="81" y="109" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">互</text>
+<text x="81" y="129" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">展</text>
+<text x="81" y="149" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">示</text>
+<text x="81" y="169" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">层</text>
+<rect x="261" y="147" width="150" height="46" fill="#BAE0FF" rx="8" stroke="#777" stroke-width="1"/>
+<text x="336" y="175" font-size="12" text-anchor="middle" fill="#333">GUI界面模块</text>
+<rect x="425" y="147" width="150" height="46" fill="#BAE0FF" rx="8" stroke="#777" stroke-width="1"/>
+<text x="500" y="175" font-size="12" text-anchor="middle" fill="#333">语音交互模块</text>
+<rect x="589" y="147" width="150" height="46" fill="#BAE0FF" rx="8" stroke="#777" stroke-width="1"/>
+<text x="664" y="175" font-size="12" text-anchor="middle" fill="#333">路线展示模块</text>
+<rect x="60" y="315" width="880" height="210" fill="#FFF3E0" rx="12" stroke="#999" stroke-width="1.5"/>
+<rect x="66" y="321" width="30" height="198" fill="#FFF3E0" rx="6" stroke="#aaa" stroke-width="0.8"/>
+<text x="81" y="339" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">业</text>
+<text x="81" y="359" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">务</text>
+<text x="81" y="379" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">逻</text>
+<text x="81" y="399" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">辑</text>
+<text x="81" y="419" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">层</text>
+<rect x="179" y="397" width="150" height="46" fill="#FFE0B2" rx="8" stroke="#777" stroke-width="1"/>
+<text x="254" y="425" font-size="12" text-anchor="middle" fill="#333">分诊流程控制</text>
+<rect x="343" y="397" width="150" height="46" fill="#FFE0B2" rx="8" stroke="#777" stroke-width="1"/>
+<text x="418" y="425" font-size="12" text-anchor="middle" fill="#333">症状管理模块</text>
+<rect x="507" y="397" width="150" height="46" fill="#FFE0B2" rx="8" stroke="#777" stroke-width="1"/>
+<text x="582" y="425" font-size="12" text-anchor="middle" fill="#333">历史记录模块</text>
+<rect x="671" y="397" width="150" height="46" fill="#FFE0B2" rx="8" stroke="#777" stroke-width="1"/>
+<text x="746" y="425" font-size="12" text-anchor="middle" fill="#333">异常处理模块</text>
+<rect x="60" y="565" width="880" height="210" fill="#E8F5E9" rx="12" stroke="#999" stroke-width="1.5"/>
+<rect x="66" y="571" width="30" height="198" fill="#E8F5E9" rx="6" stroke="#aaa" stroke-width="0.8"/>
+<text x="81" y="589" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">算</text>
+<text x="81" y="609" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">法</text>
+<text x="81" y="629" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">推</text>
+<text x="81" y="649" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">理</text>
+<text x="81" y="669" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">层</text>
+<rect x="179" y="647" width="150" height="46" fill="#C8E6C9" rx="8" stroke="#777" stroke-width="1"/>
+<text x="254" y="675" font-size="12" text-anchor="middle" fill="#333">专家系统推理机</text>
+<rect x="343" y="647" width="150" height="46" fill="#C8E6C9" rx="8" stroke="#777" stroke-width="1"/>
+<text x="418" y="675" font-size="12" text-anchor="middle" fill="#333">深度学习模型</text>
+<rect x="507" y="647" width="150" height="46" fill="#C8E6C9" rx="8" stroke="#777" stroke-width="1"/>
+<text x="582" y="675" font-size="12" text-anchor="middle" fill="#333">症状提取引擎</text>
+<rect x="671" y="647" width="150" height="46" fill="#C8E6C9" rx="8" stroke="#777" stroke-width="1"/>
+<text x="746" y="675" font-size="12" text-anchor="middle" fill="#333">语音转文本引擎</text>
+<rect x="60" y="815" width="880" height="210" fill="#FCE4EC" rx="12" stroke="#999" stroke-width="1.5"/>
+<rect x="66" y="821" width="30" height="198" fill="#FCE4EC" rx="6" stroke="#aaa" stroke-width="0.8"/>
+<text x="81" y="839" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">数</text>
+<text x="81" y="859" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">据</text>
+<text x="81" y="879" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">层</text>
+<rect x="179" y="897" width="150" height="46" fill="#F8BBD0" rx="8" stroke="#777" stroke-width="1"/>
+<text x="254" y="925" font-size="12" text-anchor="middle" fill="#333">SQLite数据库</text>
+<rect x="343" y="897" width="150" height="46" fill="#F8BBD0" rx="8" stroke="#777" stroke-width="1"/>
+<text x="418" y="925" font-size="12" text-anchor="middle" fill="#333">症状知识库</text>
+<rect x="507" y="897" width="150" height="46" fill="#F8BBD0" rx="8" stroke="#777" stroke-width="1"/>
+<text x="582" y="925" font-size="12" text-anchor="middle" fill="#333">规则库</text>
+<rect x="671" y="897" width="150" height="46" fill="#F8BBD0" rx="8" stroke="#777" stroke-width="1"/>
+<text x="746" y="925" font-size="12" text-anchor="middle" fill="#333">科室楼层数据</text>
+<line x1="336" y1="275" x2="254" y2="397" stroke="#1890FF" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="500" y1="275" x2="418" y2="397" stroke="#1890FF" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="664" y1="275" x2="582" y2="397" stroke="#1890FF" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="254" y1="525" x2="254" y2="647" stroke="#52C41A" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="418" y1="525" x2="418" y2="647" stroke="#52C41A" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="582" y1="525" x2="582" y2="647" stroke="#52C41A" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="746" y1="525" x2="746" y2="647" stroke="#52C41A" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="254" y1="775" x2="254" y2="897" stroke="#FA8C16" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="418" y1="775" x2="418" y2="897" stroke="#FA8C16" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="582" y1="775" x2="582" y2="897" stroke="#FA8C16" stroke-width="2" marker-end="url(#ab)"/>
+<line x1="746" y1="775" x2="746" y2="897" stroke="#FA8C16" stroke-width="2" marker-end="url(#ab)"/>
+<text x="500" y="1232" font-size="12" text-anchor="middle" fill="#888">图1：系统四层架构（交互展示层 → 业务逻辑层 → 算法推理层 → 数据层）</text>
+</svg>

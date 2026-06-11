@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1890FF"/></marker>
+    <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <text x="450" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">患者导诊使用流程</text>
+
+  <!-- Start -->
+  <ellipse cx="130" cy="80" rx="80" ry="25" fill="#52C41A" filter="url(#sh)"/>
+  <text x="130" y="86" text-anchor="middle" font-size="13" fill="white" font-weight="bold">开始: 患者到达</text>
+
+  <line x1="210" y1="80" x2="270" y2="80" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- 选择输入方式 -->
+  <rect x="275" y="55" width="150" height="50" rx="8" fill="#1890FF" filter="url(#sh)"/>
+  <text x="350" y="75" text-anchor="middle" font-size="12" fill="white" font-weight="bold">选择输入方式</text>
+  <text x="350" y="93" text-anchor="middle" font-size="10" fill="white" opacity="0.8">语音 / 文字 / 快捷按钮</text>
+
+  <line x1="425" y1="80" x2="485" y2="80" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- 描述症状 -->
+  <rect x="490" y="55" width="140" height="50" rx="8" fill="#722ED1" filter="url(#sh)"/>
+  <text x="560" y="75" text-anchor="middle" font-size="12" fill="white" font-weight="bold">描述症状</text>
+  <text x="560" y="93" text-anchor="middle" font-size="10" fill="white" opacity="0.8">说出/输入不适</text>
+
+  <line x1="630" y1="80" x2="690" y2="80" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- 症状提取 -->
+  <rect x="695" y="55" width="150" height="50" rx="8" fill="#FA8C16" filter="url(#sh)"/>
+  <text x="770" y="75" text-anchor="middle" font-size="12" fill="white" font-weight="bold">AI症状提取</text>
+  <text x="770" y="93" text-anchor="middle" font-size="10" fill="white" opacity="0.8">分词 + 同义词匹配</text>
+
+  <!-- Arrow down -->
+  <line x1="770" y1="108" x2="770" y2="150" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- 专家系统推理 -->
+  <rect x="595" y="155" width="200" height="55" rx="8" fill="#EB2F96" filter="url(#sh)"/>
+  <text x="695" y="177" text-anchor="middle" font-size="13" fill="white" font-weight="bold">专家系统推理</text>
+  <text x="695" y="195" text-anchor="middle" font-size="10" fill="white" opacity="0.8">规则库匹配 + 置信度计算</text>
+
+  <line x1="695" y1="210" x2="695" y2="260" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- 分岔 -->
+  <polygon points="695,260 665,270 725,270" fill="#FF4D4F" filter="url(#sh)"/>
+  <text x="695" y="288" text-anchor="middle" font-size="10" fill="#FF4D4F" font-weight="bold">匹配成功?</text>
+
+  <!-- 成功路径 -->
+  <line x1="665" y1="270" x2="450" y2="270" stroke="#52C41A" stroke-width="2"/>
+  <line x1="450" y1="270" x2="450" y2="330" stroke="#52C41A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="580" y="263" text-anchor="middle" font-size="11" fill="#52C41A">✅ 是</text>
+
+  <!-- 失败路径 -->
+  <line x1="725" y1="270" x2="830" y2="270" stroke="#FF4D4F" stroke-width="2"/>
+  <line x1="830" y1="270" x2="830" y2="410" stroke="#FF4D4F" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="780" y="263" text-anchor="middle" font-size="11" fill="#FF4D4F">❌ 否</text>
+
+  <!-- 结果显示 -->
+  <rect x="310" y="335" width="280" height="55" rx="8" fill="#52C41A" filter="url(#sh)"/>
+  <text x="450" y="357" text-anchor="middle" font-size="13" fill="white" font-weight="bold">显示分诊结果 + 导航路线</text>
+  <text x="450" y="375" text-anchor="middle" font-size="10" fill="white" opacity="0.8">科室建议 | 置信度 | 楼层指引 | 医院地图</text>
+
+  <line x1="450" y1="393" x2="450" y2="445" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- End -->
+  <ellipse cx="450" cy="465" rx="60" ry="20" fill="#1890FF" filter="url(#sh)"/>
+  <text x="450" y="470" text-anchor="middle" font-size="13" fill="white" font-weight="bold">完成就诊</text>
+
+  <!-- 失败处理 -->
+  <rect x="730" y="415" width="150" height="50" rx="8" fill="#FF4D4F" filter="url(#sh)"/>
+  <text x="805" y="437" text-anchor="middle" font-size="12" fill="white" font-weight="bold">引导人工导诊</text>
+  <text x="805" y="455" text-anchor="middle" font-size="10" fill="white" opacity="0.8">补充症状描述</text>
+
+  <line x1="805" y1="468" x2="805" y2="490" stroke="#1890FF" stroke-width="2"/>
+  <line x1="805" y1="490" x2="550" y2="490" stroke="#999" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="550" y1="490" x2="550" y2="185" stroke="#999" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow2)"/>
+  <text x="695" y="495" text-anchor="middle" font-size="9" fill="#999">重新描述症状</text>
+</svg>

@@ -1,0 +1,128 @@
+[
+  {
+    "rule_id": 1,
+    "symptom_id": 1,
+    "dept_id": 1,
+    "rule_weight": 1.5,
+    "conditions": "IF 头痛 THEN 神经内科"
+  },
+  {
+    "rule_id": 2,
+    "symptom_id": 11,
+    "dept_id": 1,
+    "rule_weight": 1.2,
+    "conditions": "IF 头晕 THEN 神经内科"
+  },
+  {
+    "rule_id": 3,
+    "symptom_id": 3,
+    "dept_id": 2,
+    "rule_weight": 1.4,
+    "conditions": "IF 咳嗽 THEN 呼吸内科"
+  },
+  {
+    "rule_id": 4,
+    "symptom_id": 4,
+    "dept_id": 2,
+    "rule_weight": 1.3,
+    "conditions": "IF 咽痛 THEN 呼吸内科"
+  },
+  {
+    "rule_id": 5,
+    "symptom_id": 6,
+    "dept_id": 3,
+    "rule_weight": 1.4,
+    "conditions": "IF 腹痛 THEN 消化内科"
+  },
+  {
+    "rule_id": 6,
+    "symptom_id": 7,
+    "dept_id": 3,
+    "rule_weight": 1.2,
+    "conditions": "IF 恶心 THEN 消化内科"
+  },
+  {
+    "rule_id": 7,
+    "symptom_id": 8,
+    "dept_id": 3,
+    "rule_weight": 1.3,
+    "conditions": "IF 腹泻 THEN 消化内科"
+  },
+  {
+    "rule_id": 8,
+    "symptom_id": 14,
+    "dept_id": 3,
+    "rule_weight": 0.9,
+    "conditions": "IF 食欲不振 THEN 消化内科"
+  },
+  {
+    "rule_id": 9,
+    "symptom_id": 5,
+    "dept_id": 4,
+    "rule_weight": 1.5,
+    "conditions": "IF 胸闷 THEN 心血管内科"
+  },
+  {
+    "rule_id": 10,
+    "symptom_id": 12,
+    "dept_id": 4,
+    "rule_weight": 1.4,
+    "conditions": "IF 心悸 THEN 心血管内科"
+  },
+  {
+    "rule_id": 11,
+    "symptom_id": 9,
+    "dept_id": 5,
+    "rule_weight": 1.5,
+    "conditions": "IF 关节疼痛 THEN 骨科"
+  },
+  {
+    "rule_id": 12,
+    "symptom_id": 10,
+    "dept_id": 6,
+    "rule_weight": 1.5,
+    "conditions": "IF 皮疹 THEN 皮肤科"
+  },
+  {
+    "rule_id": 13,
+    "symptom_id": 2,
+    "dept_id": 7,
+    "rule_weight": 1.0,
+    "conditions": "IF 发热 THEN 普通内科"
+  },
+  {
+    "rule_id": 14,
+    "symptom_id": 13,
+    "dept_id": 7,
+    "rule_weight": 0.8,
+    "conditions": "IF 乏力 THEN 普通内科"
+  },
+  {
+    "rule_id": 15,
+    "symptom_id": 15,
+    "dept_id": 7,
+    "rule_weight": 1.1,
+    "conditions": "IF 体重下降 THEN 普通内科"
+  },
+  {
+    "rule_id": 16,
+    "symptom_id": 1,
+    "dept_id": 8,
+    "rule_weight": 0.8,
+    "conditions": "IF 剧烈头痛伴呕吐 THEN 急诊科"
+  },
+  {
+    "rule_id": 17,
+    "symptom_id": 5,
+    "dept_id": 8,
+    "rule_weight": 1.0,
+    "conditions": "IF 胸闷伴大汗 THEN 急诊科"
+  },
+  {
+    "rule_id": 18,
+    "symptom_id": 2,
+    "dept_id": 8,
+    "rule_weight": 0.9,
+    "conditions": "IF 高热不退 THEN 急诊科"
+  }
+]

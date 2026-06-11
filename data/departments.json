@@ -1,0 +1,58 @@
+[
+  {
+    "dept_id": 1,
+    "dept_name": "神经内科",
+    "function_desc": "诊治神经系统疾病",
+    "floor": 3,
+    "location_desc": "3楼东侧走廊,神经内科门诊区"
+  },
+  {
+    "dept_id": 2,
+    "dept_name": "呼吸内科",
+    "function_desc": "诊治呼吸系统疾病",
+    "floor": 4,
+    "location_desc": "4楼南侧,呼吸内科诊区"
+  },
+  {
+    "dept_id": 3,
+    "dept_name": "消化内科",
+    "function_desc": "诊治消化系统疾病",
+    "floor": 4,
+    "location_desc": "4楼北侧,消化内科诊区"
+  },
+  {
+    "dept_id": 4,
+    "dept_name": "心血管内科",
+    "function_desc": "诊治心血管疾病",
+    "floor": 3,
+    "location_desc": "3楼西侧,心血管内科诊区"
+  },
+  {
+    "dept_id": 5,
+    "dept_name": "骨科",
+    "function_desc": "诊治骨骼肌肉系统疾病",
+    "floor": 2,
+    "location_desc": "2楼东侧,骨科诊区"
+  },
+  {
+    "dept_id": 6,
+    "dept_name": "皮肤科",
+    "function_desc": "诊治皮肤疾病",
+    "floor": 5,
+    "location_desc": "5楼南侧,皮肤科诊区"
+  },
+  {
+    "dept_id": 7,
+    "dept_name": "普通内科",
+    "function_desc": "综合内科常见病诊治",
+    "floor": 1,
+    "location_desc": "1楼东侧,综合门诊区"
+  },
+  {
+    "dept_id": 8,
+    "dept_name": "急诊科",
+    "function_desc": "急危重症救治",
+    "floor": 1,
+    "location_desc": "1楼北侧,急诊中心"
+  }
+]

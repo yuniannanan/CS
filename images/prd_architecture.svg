@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="gLayer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E6F7FF"/><stop offset="100%" stop-color="#BAE7FF"/>
+    </linearGradient>
+    <linearGradient id="gCore" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFF7E6"/><stop offset="100%" stop-color="#FFD591"/>
+    </linearGradient>
+    <linearGradient id="gData" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F6FFED"/><stop offset="100%" stop-color="#B7EB8F"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/></filter>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1890FF"/>
+    </marker>
+  </defs>
+
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">智能导医系统 - 混合架构图</text>
+  <line x1="100" y1="48" x2="800" y2="48" stroke="#1890FF" stroke-width="2"/>
+
+  <!-- 表示层 -->
+  <rect x="30" y="65" width="840" height="100" rx="10" fill="url(#gLayer)" stroke="#1890FF" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="#096DD9">表示层 (Presentation Layer)</text>
+  <rect x="60" y="105" width="150" height="45" rx="6" fill="white" stroke="#1890FF" stroke-width="1"/>
+  <text x="135" y="133" text-anchor="middle" font-size="12" fill="#333">语音输入模块</text>
+  <rect x="240" y="105" width="150" height="45" rx="6" fill="white" stroke="#1890FF" stroke-width="1"/>
+  <text x="315" y="133" text-anchor="middle" font-size="12" fill="#333">文字输入模块</text>
+  <rect x="420" y="105" width="150" height="45" rx="6" fill="white" stroke="#1890FF" stroke-width="1"/>
+  <text x="495" y="133" text-anchor="middle" font-size="12" fill="#333">分诊结果展示</text>
+  <rect x="600" y="105" width="150" height="45" rx="6" fill="white" stroke="#1890FF" stroke-width="1"/>
+  <text x="675" y="133" text-anchor="middle" font-size="12" fill="#333">楼层导航展示</text>
+
+  <!-- 箭头1 -->
+  <line x1="450" y1="168" x2="450" y2="195" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 业务逻辑层 -->
+  <rect x="30" y="200" width="840" height="150" rx="10" fill="url(#gCore)" stroke="#FA8C16" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="225" text-anchor="middle" font-size="15" font-weight="bold" fill="#D46B08">业务逻辑层 (Expert System + NLP)</text>
+  <rect x="60" y="240" width="180" height="45" rx="6" fill="white" stroke="#FA8C16" stroke-width="1"/>
+  <text x="150" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">语音识别引擎</text>
+  <text x="150" y="275" text-anchor="middle" font-size="9" fill="#888">Whisper / 百度API</text>
+  <rect x="260" y="240" width="180" height="45" rx="6" fill="white" stroke="#FA8C16" stroke-width="1"/>
+  <text x="350" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">症状提取引擎</text>
+  <text x="350" y="275" text-anchor="middle" font-size="9" fill="#888">jieba分词 + 同义词匹配</text>
+  <rect x="460" y="240" width="180" height="45" rx="6" fill="white" stroke="#FA8C16" stroke-width="1"/>
+  <text x="550" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">专家系统推理机</text>
+  <text x="550" y="275" text-anchor="middle" font-size="9" fill="#888">IF-THEN规则 + 组合推理</text>
+  <rect x="660" y="240" width="180" height="45" rx="6" fill="white" stroke="#FA8C16" stroke-width="1"/>
+  <text x="750" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">路径规划引擎</text>
+  <text x="750" y="275" text-anchor="middle" font-size="9" fill="#888">医院场景模型寻路</text>
+
+  <!-- 箭头2 -->
+  <line x1="450" y1="353" x2="450" y2="380" stroke="#1890FF" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 数据层 -->
+  <rect x="30" y="385" width="840" height="100" rx="10" fill="url(#gData)" stroke="#52C41A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="410" text-anchor="middle" font-size="15" font-weight="bold" fill="#389E0D">数据层 (Data Layer)</text>
+  <rect x="100" y="425" width="140" height="45" rx="6" fill="white" stroke="#52C41A" stroke-width="1"/>
+  <text x="170" y="448" text-anchor="middle" font-size="11" fill="#333">症状知识库</text>
+  <rect x="270" y="425" width="140" height="45" rx="6" fill="white" stroke="#52C41A" stroke-width="1"/>
+  <text x="340" y="448" text-anchor="middle" font-size="11" fill="#333">规则库 (51条)</text>
+  <rect x="440" y="425" width="140" height="45" rx="6" fill="white" stroke="#52C41A" stroke-width="1"/>
+  <text x="510" y="448" text-anchor="middle" font-size="11" fill="#333">科室信息库</text>
+  <rect x="610" y="425" width="140" height="45" rx="6" fill="white" stroke="#52C41A" stroke-width="1"/>
+  <text x="680" y="448" text-anchor="middle" font-size="11" fill="#333">医院场景模型</text>
+
+  <!-- 左边标签 -->
+  <rect x="5" y="60" width="20" height="510" rx="3" fill="#1890FF" opacity="0.15"/>
+  <text x="15" y="320" text-anchor="middle" font-size="10" fill="#1890FF" transform="rotate(-90,15,320)">三层架构 MVC</text>
+
+  <!-- 技术栈 -->
+  <rect x="30" y="505" width="840" height="55" rx="8" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="450" y="525" text-anchor="middle" font-size="12" fill="#666">技术栈: Python 3.13 | Flask Web框架 | PyQt5 GUI | SQLite数据库 | Whisper语音识别 | jieba分词 | 专家系统推理机</text>
+  <text x="450" y="545" text-anchor="middle" font-size="10" fill="#999">部署: 自签名HTTPS | 响应式Web设计 | 移动端适配 | 完全离线语音识别</text>
+
+  <!-- 底部说明 -->
+  <text x="450" y="595" text-anchor="middle" font-size="11" fill="#BBB">图1: 智能导医系统整体架构图 — 三层MVC架构 + 混合AI技术栈</text>
+</svg>
